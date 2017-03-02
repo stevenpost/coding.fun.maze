@@ -41,6 +41,11 @@ public class Position {
 	}
 
 	@Override
+	public String toString() {
+		return "(" + this.x + "," + this.y + ")";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

@@ -2,6 +2,7 @@ package coding.fun.maze;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import coding.fun.maze.solvers.MazeSolver;
@@ -23,10 +24,15 @@ public class Main {
 		long endMazeLoadingTime = System.currentTimeMillis();
 		LOG.info("Loaded maze in " + (endMazeLoadingTime - startTime) + " ms");
 
+		NodeCreator creator = new NodeCreator(array);
+		List<Node> nodes = creator.createNodes();
+		long endNodeCreationTime = System.currentTimeMillis();
+		LOG.info("Created " + nodes.size() + " node(s) in " + (endNodeCreationTime - endMazeLoadingTime) + " ms");
+
 		MazeSolver solver = new RecursiveSolver(array);
 		solver.solve();
 		long endMazeSolvingTime = System.currentTimeMillis();
-		LOG.info("Solved maze in " + (endMazeSolvingTime - endMazeLoadingTime) + " ms");
+		LOG.info("Solved maze in " + (endMazeSolvingTime - endNodeCreationTime) + " ms");
 		solver.printStatistics();
 
 		imageHandler.writeOutputMaze(solver.getSolvedMaze(), solvedMazeImage);
