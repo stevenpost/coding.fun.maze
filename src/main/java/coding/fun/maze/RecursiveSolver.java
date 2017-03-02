@@ -2,6 +2,9 @@ package coding.fun.maze;
 
 public class RecursiveSolver implements MazeSolver {
 
+	private int nrOfSteps = 0;
+	private int nrOfBackTracks = 0;
+
 	private final boolean[][] maze;
 	private TileType[][] visitedMaze;
 	private final TileType[][] solvedMaze;
@@ -51,6 +54,7 @@ public class RecursiveSolver implements MazeSolver {
 	}
 
 	public boolean step(Position currentPos) {
+		this.nrOfSteps++;
 		this.visitedMaze[currentPos.getY()][currentPos.getX()] = TileType.VISITED;
 		this.solvedMaze[currentPos.getY()][currentPos.getX()] = TileType.VISITED;
 
@@ -69,6 +73,7 @@ public class RecursiveSolver implements MazeSolver {
 		}
 		catch (IllegalArgumentException iae) {
 			// We need to backtrack
+			this.nrOfBackTracks++;
 			this.solvedMaze[currentPos.getY()][currentPos.getX()] = TileType.FREE;
 			return false;
 		}
@@ -99,6 +104,13 @@ public class RecursiveSolver implements MazeSolver {
 
 	private TileType typeAtPos(Position pos) {
 		return this.visitedMaze[pos.getY()][pos.getX()];
+	}
+
+	@Override
+	public void printStatistics() {
+		System.out.println("Method: " + this.getClass().getName());
+		System.out.println("Number of steps taken: " + this.nrOfSteps);
+		System.out.println("Number of times we had to backtrack: " + this.nrOfBackTracks);
 	}
 
 }

@@ -4,5 +4,6 @@ public interface MazeSolver {
 
 	void solve();
 	TileType[][] getSolvedMaze();
+	void printStatistics();
 
 }
