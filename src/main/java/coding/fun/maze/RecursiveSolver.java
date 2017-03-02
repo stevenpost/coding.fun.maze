@@ -2,8 +2,6 @@ package coding.fun.maze;
 
 public class RecursiveSolver implements MazeSolver {
 
-	public enum TileType {WALL, FREE, VISITED}
-
 	private final boolean[][] maze;
 	private TileType[][] visitedMaze;
 	private final TileType[][] solvedMaze;

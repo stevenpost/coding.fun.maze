@@ -7,8 +7,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import coding.fun.maze.RecursiveSolver.TileType;
-
 public class MazeImageHandler {
 
 	public boolean[][] loadMaze(File file) throws IOException {

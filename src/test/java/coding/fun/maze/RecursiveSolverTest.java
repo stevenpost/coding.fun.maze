@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import coding.fun.maze.RecursiveSolver.TileType;
-
 public class RecursiveSolverTest {
 
 	@Test
