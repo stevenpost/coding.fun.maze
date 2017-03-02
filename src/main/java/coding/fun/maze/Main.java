@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import coding.fun.maze.solvers.MazeSolver;
+import coding.fun.maze.solvers.RecursiveSolver;
+
 public class Main {
 
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());

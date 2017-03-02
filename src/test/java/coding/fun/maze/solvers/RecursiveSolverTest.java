@@ -1,9 +1,13 @@
-package coding.fun.maze;
+package coding.fun.maze.solvers;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import coding.fun.maze.Position;
+import coding.fun.maze.TileType;
+import coding.fun.maze.solvers.RecursiveSolver;
 
 public class RecursiveSolverTest {
 

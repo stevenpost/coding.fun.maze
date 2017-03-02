@@ -1,4 +1,6 @@
-package coding.fun.maze;
+package coding.fun.maze.solvers;
+
+import coding.fun.maze.TileType;
 
 public interface MazeSolver {
 
