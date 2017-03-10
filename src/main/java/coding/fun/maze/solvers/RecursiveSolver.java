@@ -74,7 +74,7 @@ public class RecursiveSolver implements MazeSolver {
 			}
 			return found;
 		}
-		catch (IllegalArgumentException iae) {
+		catch (@SuppressWarnings("unused") IllegalArgumentException iae) {
 			// We need to backtrack
 			this.nrOfBackTracks++;
 			this.solvedMaze[currentPos.getY()][currentPos.getX()] = TileType.FREE;
