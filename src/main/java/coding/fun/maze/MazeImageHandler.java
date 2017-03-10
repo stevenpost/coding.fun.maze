@@ -75,7 +75,7 @@ public class MazeImageHandler {
 		ImageIO.write(outputImg, "png", outputfile);
 	}
 
-	public void writeSolutionForNodes(boolean[][] maze, File output, Node startNode) throws IOException {
+	public void writeSolutionForNodes(boolean[][] maze, File output, List<? extends Node> solutionNodes) throws IOException {
 		BufferedImage outputImg = new BufferedImage(maze[0].length, maze.length, BufferedImage.TYPE_INT_ARGB);
 		for (int x = 0; x < outputImg.getWidth(); x++) {
 			for (int y = 0; y < outputImg.getHeight(); y++) {
@@ -88,17 +88,21 @@ public class MazeImageHandler {
 			}
 		}
 
-		Node currentNode = startNode;
-		Node previousNode = startNode;
-		while (currentNode != null) {
+		Node currentNode;
+		Node previousNode = solutionNodes.get(0);
+		for (Node n : solutionNodes) {
+			currentNode = n;
 			Position pos = currentNode.getPosition();
 			Position previousPos = previousNode.getPosition();
+
+			if (maze.length == 401) {
+				System.out.println("Now coloring " + pos.toString());
+			}
 			outputImg.setRGB(pos.getX(), pos.getY(), Color.RED.getRGB());
 
 			fillBetweenNodes(outputImg, pos, previousPos);
 
 			previousNode = currentNode;
-			currentNode = getNextNode(currentNode);
 		}
 
 		ImageIO.write(outputImg, "png", output);
@@ -135,40 +139,6 @@ public class MazeImageHandler {
 		for (int y = startY; y < endY; y++) {
 			outputImg.setRGB(startX, y, Color.RED.getRGB());
 		}
-	}
-
-	private Node getNextNode(Node currentNode) {
-		Node nextNode;
-
-		// down
-		nextNode = currentNode.getLinkDown();
-		if (nextNode != null) {
-			currentNode.unlinkDown();
-			return nextNode;
-		}
-
-		// right
-		nextNode = currentNode.getLinkRight();
-		if (nextNode != null) {
-			currentNode.unlinkRight();
-			return nextNode;
-		}
-
-		// left
-		nextNode = currentNode.getLinkLeft();
-		currentNode.unlinkLeft();
-		if (nextNode != null) {
-			return nextNode;
-		}
-
-		// up
-		nextNode = currentNode.getLinkUp();
-		currentNode.unlinkUp();
-		if (nextNode != null) {
-			return nextNode;
-		}
-
-		return null;
 	}
 
 }

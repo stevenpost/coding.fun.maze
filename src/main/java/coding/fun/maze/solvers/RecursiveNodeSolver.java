@@ -2,6 +2,8 @@ package coding.fun.maze.solvers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import coding.fun.maze.MazeImageHandler;
 import coding.fun.maze.TileType;
@@ -14,6 +16,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 	private int nrOfSteps = 0;
 	private int nrOfBackTracks = 0;
 	private final boolean[][] maze;
+	private final List<VisitableNode> solutionNodes = new ArrayList<>();
 
 	public RecursiveNodeSolver(VisitableNode startNode, int height, boolean[][] maze) {
 		this.startNode = startNode;
@@ -24,6 +27,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 	@Override
 	public void solve() {
 		step(this.startNode);
+		this.solutionNodes.add(this.startNode);
 	}
 
 	private boolean step(VisitableNode currentNode) {
@@ -39,6 +43,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 		nextNode = (VisitableNode) currentNode.getLinkDown();
 		if (nextNode != null && !nextNode.isVisited()) {
 			if (step(nextNode)) {
+				this.solutionNodes.add(nextNode);
 				return true;
 			}
 			currentNode.unlinkDown();
@@ -48,6 +53,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 		nextNode = (VisitableNode) currentNode.getLinkRight();
 		if (nextNode != null && !nextNode.isVisited()) {
 			if (step(nextNode)) {
+				this.solutionNodes.add(nextNode);
 				return true;
 			}
 			currentNode.unlinkRight();
@@ -57,6 +63,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 		nextNode = (VisitableNode) currentNode.getLinkLeft();
 		if (nextNode != null && !nextNode.isVisited()) {
 			if (step(nextNode)) {
+				this.solutionNodes.add(nextNode);
 				return true;
 			}
 			currentNode.unlinkLeft();
@@ -66,6 +73,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 		nextNode = (VisitableNode) currentNode.getLinkUp();
 		if (nextNode != null && !nextNode.isVisited()) {
 			if (step(nextNode)) {
+				this.solutionNodes.add(nextNode);
 				return true;
 			}
 			currentNode.unlinkUp();
@@ -90,7 +98,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 	@Override
 	public void writeSolutionImage(File output) throws IOException {
 		MazeImageHandler handler = new MazeImageHandler();
-		handler.writeSolutionForNodes(this.maze, output, this.startNode);
+		handler.writeSolutionForNodes(this.maze, output, this.solutionNodes);
 	}
 
 }
