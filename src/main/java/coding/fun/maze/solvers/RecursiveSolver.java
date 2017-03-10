@@ -12,27 +12,23 @@ public class RecursiveSolver implements MazeSolver {
 	private int nrOfSteps = 0;
 	private int nrOfBackTracks = 0;
 
-	private final boolean[][] maze;
 	private TileType[][] visitedMaze;
 	private final TileType[][] solvedMaze;
 	private final int heigth;
 	private final int width;
 
-	public RecursiveSolver(boolean[][] maze) {
-		this.maze = maze;
+	public RecursiveSolver(TileType[][] maze) {
+		this.visitedMaze = maze;
 		this.heigth = maze.length;
 		this.width = maze[0].length;
 
-		this.visitedMaze = new TileType[this.heigth][this.width];
 		this.solvedMaze = new TileType[this.heigth][this.width];
 		for(int x = 0; x < maze.length; x++) {
 			for(int y = 0; y < maze[0].length; y++) {
-				if (maze[x][y]) {
-					this.visitedMaze[x][y] = TileType.FREE;
+				if (maze[x][y] == TileType.FREE) {
 					this.solvedMaze[x][y] = TileType.FREE;
 				}
 				else {
-					this.visitedMaze[x][y] = TileType.WALL;
 					this.solvedMaze[x][y] = TileType.WALL;
 				}
 			}
@@ -52,7 +48,7 @@ public class RecursiveSolver implements MazeSolver {
 	public void solve() {
 		int startX = 0;
 		for (int x = 0; x < this.width; x++) {
-			if (this.maze[0][x]) {
+			if (this.visitedMaze[0][x] == TileType.FREE) {
 				startX = x;
 				break;
 			}

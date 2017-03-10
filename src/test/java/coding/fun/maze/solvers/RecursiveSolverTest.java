@@ -7,14 +7,13 @@ import org.junit.Test;
 
 import coding.fun.maze.Position;
 import coding.fun.maze.TileType;
-import coding.fun.maze.solvers.RecursiveSolver;
 
 public class RecursiveSolverTest {
 
 	@Test
 	public void testNextCandidateDown() {
-		boolean[][] maze = {{false, true, false},
-		                    {false, true, false}};
+		TileType[][] maze = {{TileType.WALL, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.WALL}};
 
 		RecursiveSolver solver = new RecursiveSolver(maze);
 		Position nextPos = solver.getNextCandidatePosition(new Position(1, 0));
@@ -25,8 +24,8 @@ public class RecursiveSolverTest {
 
 	@Test
 	public void testNextCandidateRight() {
-		boolean[][] maze = {{false, true, true},
-		                    {false, false, false}};
+		TileType[][] maze = {{TileType.WALL, TileType.FREE, TileType.FREE},
+		                     {TileType.WALL, TileType.WALL, TileType.WALL}};
 
 		RecursiveSolver solver = new RecursiveSolver(maze);
 		Position nextPos = solver.getNextCandidatePosition(new Position(1, 0));
@@ -37,8 +36,8 @@ public class RecursiveSolverTest {
 
 	@Test
 	public void testNextCandidateLeft() {
-		boolean[][] maze = {{true, true, false},
-		                    {false, false, false}};
+		TileType[][] maze = {{TileType.FREE, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.WALL, TileType.WALL}};
 
 		RecursiveSolver solver = new RecursiveSolver(maze);
 		Position nextPos = solver.getNextCandidatePosition(new Position(1, 0));
@@ -49,8 +48,8 @@ public class RecursiveSolverTest {
 
 	@Test
 	public void testNextCandidateUp() {
-		boolean[][] maze = {{false, true, false},
-		                    {false, true, false}};
+		TileType[][] maze = {{TileType.WALL, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.WALL}};
 
 		RecursiveSolver solver = new RecursiveSolver(maze);
 		Position nextPos = solver.getNextCandidatePosition(new Position(1, 1));
@@ -61,8 +60,8 @@ public class RecursiveSolverTest {
 
 	@Test
 	public void testNextCandidateRightVisited() {
-		boolean[][] maze = {{false, true, true},
-		                    {false, true, false}};
+		TileType[][] maze = {{TileType.WALL, TileType.FREE, TileType.FREE},
+		                     {TileType.WALL, TileType.FREE, TileType.WALL}};
 
 		TileType[][] visitedMaze = {{TileType.WALL, TileType.VISITED, TileType.FREE},
 		                            {TileType.WALL, TileType.VISITED, TileType.WALL}};
@@ -77,8 +76,8 @@ public class RecursiveSolverTest {
 
 	@Test
 	public void testSmallest() {
-		boolean[][] maze = {{false, true, false},
-		                    {false, true, false}};
+		TileType[][] maze = {{TileType.WALL, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.WALL}};
 
 		TileType[][] expected = {{TileType.WALL, TileType.VISITED, TileType.WALL},
 		                         {TileType.WALL, TileType.VISITED, TileType.WALL}};
@@ -92,11 +91,11 @@ public class RecursiveSolverTest {
 
 	@Test
 	public void testSmall() {
-		boolean[][] maze = {{false, true, false, false},
-		                    {false, true, true, false},
-		                    {false, false, true, false},
-		                    {false, true, true, false},
-		                    {false, true, false, false}};
+		TileType[][] maze = {{TileType.WALL, TileType.FREE, TileType.WALL, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.WALL, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.WALL, TileType.WALL}};
 
 		TileType[][] expected = {{TileType.WALL, TileType.VISITED, TileType.WALL, TileType.WALL},
 		                         {TileType.WALL, TileType.VISITED, TileType.VISITED, TileType.WALL},
@@ -113,16 +112,16 @@ public class RecursiveSolverTest {
 
 	@Test
 	public void testSmallDeadEnd() {
-		boolean[][] maze = {{false, true, false, false, false},
-		                    {false, true, true, false, false},
-		                    {false, false, true, false, false},
-		                    {false, true, true, false, false},
-		                    {false, true, false, false, false},
-		                    {false, true, true, true, false},
-		                    {false, true, false, true, false},
-		                    {false, false, true, true, false},
-		                    {false, false, true, false, false},
-		                    {false, false, true, false, false}};
+		TileType[][] maze = {{TileType.WALL, TileType.FREE, TileType.WALL, TileType.WALL, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.FREE, TileType.WALL, TileType.WALL},
+		                     {TileType.WALL, TileType.WALL, TileType.FREE, TileType.WALL, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.FREE, TileType.WALL, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.WALL, TileType.WALL, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.FREE, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.FREE, TileType.WALL, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.WALL, TileType.FREE, TileType.FREE, TileType.WALL},
+		                     {TileType.WALL, TileType.WALL, TileType.FREE, TileType.WALL, TileType.WALL},
+		                     {TileType.WALL, TileType.WALL, TileType.FREE, TileType.WALL, TileType.WALL}};
 
 		TileType[][] expected = {{TileType.WALL, TileType.VISITED, TileType.WALL, TileType.WALL, TileType.WALL},
 		                         {TileType.WALL, TileType.VISITED, TileType.VISITED, TileType.WALL, TileType.WALL},

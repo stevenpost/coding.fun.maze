@@ -6,8 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import org.junit.Test;
 
 @SuppressWarnings("static-method")
@@ -43,13 +41,13 @@ public class NodeCreatorTest {
 		                    {false, false, true, false}};
 
 		NodeCreator creator = new NodeCreator(maze);
-		List<Node> nodes = creator.createNodes();
+		Node startNode = creator.createNodes();
 
-		assertEquals(4, nodes.size());
-		assertEquals(new Position(1, 0), nodes.get(0).getPosition());
-		assertEquals(new Position(1, 2), nodes.get(1).getPosition());
-		assertEquals(new Position(2, 2), nodes.get(2).getPosition());
-		assertEquals(new Position(2, 3), nodes.get(3).getPosition());
+		assertEquals(4, creator.getNumberOfCreateNodes());
+		assertEquals(new Position(1, 0), startNode.getPosition());
+		assertEquals(new Position(1, 2), startNode.getLinkDown().getPosition());
+		assertEquals(new Position(2, 2), startNode.getLinkDown().getLinkRight().getPosition());
+		assertEquals(new Position(2, 3), startNode.getLinkDown().getLinkRight().getLinkDown().getPosition());
 
 	}
 
@@ -61,8 +59,7 @@ public class NodeCreatorTest {
 		                    {false, false, true, false}};
 
 		NodeCreator creator = new NodeCreator(maze);
-		List<Node> nodes = creator.createNodes();
-		Node startNode = nodes.get(0);
+		Node startNode = creator.createNodes();
 
 		assertNull(startNode.getLinkUp());
 		assertNull(startNode.getLinkLeft());

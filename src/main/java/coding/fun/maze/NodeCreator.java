@@ -1,14 +1,12 @@
 package coding.fun.maze;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class NodeCreator {
 
 	private final boolean[][] maze;
 	private final Node[][] mazeNodes;
 	private final int heigth;
 	private final int width;
+	private int nrOfCreateNodes = 0;
 
 	public NodeCreator(boolean[][] maze) {
 		this.maze = maze;
@@ -17,20 +15,23 @@ public class NodeCreator {
 		this.mazeNodes = new Node[this.heigth][this.width];
 	}
 
-	public List<Node> createNodes() {
-		List<Node> nodes = new ArrayList<>();
+	public Node createNodes() {
+		Node startNode = null;
 		for (int y = 0; y < this.maze.length; y++) {
 			for (int x = 0; x < this.maze[y].length; x++) {
 				if (isNode(x, y)) {
 					Position pos = new Position(x, y);
 					Node n = new VisitableNode(pos);
-					nodes.add(n);
+					this.nrOfCreateNodes++;
+					if (startNode == null) {
+						startNode = n;
+					}
 					this.mazeNodes[y][x] = n;
 					linkPreviousNodes(n);
 				}
 			}
 		}
-		return nodes;
+		return startNode;
 	}
 
 	private void linkPreviousNodes(Node n) {
@@ -98,6 +99,10 @@ public class NodeCreator {
 		}
 
 		return (horizontal && vertical);
+	}
+
+	public int getNumberOfCreateNodes() {
+		return this.nrOfCreateNodes;
 	}
 
 }
