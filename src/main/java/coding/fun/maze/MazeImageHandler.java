@@ -72,49 +72,52 @@ public class MazeImageHandler {
 		BufferedImage outputImg = new BufferedImage(solvedMaze[0].length, solvedMaze.length, BufferedImage.TYPE_INT_ARGB);
 		for (int x = 0; x < outputImg.getWidth(); x++) {
 			for (int y = 0; y < outputImg.getHeight(); y++) {
-				switch (solvedMaze[y][x]) {
-					case FREE:
-						outputImg.setRGB(x, y, Color.white.getRGB());
-						break;
-					case WALL:
-						outputImg.setRGB(x, y, Color.black.getRGB());
-						break;
-					case VISITED:
-						outputImg.setRGB(x, y, Color.red.getRGB());
-						break;
-					default:
-						throw new IllegalArgumentException("WTF?");
-				}
+				setMatchingColour(solvedMaze, outputImg, x, y);
 			}
 		}
 		ImageIO.write(outputImg, "png", outputfile);
+	}
+
+	private void setMatchingColour(TileType[][] solvedMaze, BufferedImage outputImg, int x, int y) {
+		switch (solvedMaze[y][x]) {
+			case FREE:
+				outputImg.setRGB(x, y, Color.white.getRGB());
+				break;
+			case WALL:
+				outputImg.setRGB(x, y, Color.black.getRGB());
+				break;
+			case VISITED:
+				outputImg.setRGB(x, y, Color.red.getRGB());
+				break;
+			default:
+				throw new IllegalArgumentException("WTF?");
+		}
 	}
 
 	public void writeMaze(boolean[][] maze, File outputfile) throws IOException {
 		BufferedImage outputImg = new BufferedImage(maze[0].length, maze.length, BufferedImage.TYPE_INT_ARGB);
 		for (int x = 0; x < outputImg.getWidth(); x++) {
 			for (int y = 0; y < outputImg.getHeight(); y++) {
-				if (maze[y][x]) {
-					outputImg.setRGB(x, y, Color.white.getRGB());
-				}
-				else {
-					outputImg.setRGB(x, y, Color.black.getRGB());
-				}
+				setMatchingColour(maze, outputImg, x, y);
 			}
 		}
 		ImageIO.write(outputImg, "png", outputfile);
+	}
+
+	private void setMatchingColour(boolean[][] maze, BufferedImage outputImg, int x, int y) {
+		if (maze[y][x]) {
+			outputImg.setRGB(x, y, Color.white.getRGB());
+		}
+		else {
+			outputImg.setRGB(x, y, Color.black.getRGB());
+		}
 	}
 
 	public void writeSolutionForNodes(boolean[][] maze, File output, List<? extends Node> solutionNodes) throws IOException {
 		BufferedImage outputImg = new BufferedImage(maze[0].length, maze.length, BufferedImage.TYPE_INT_ARGB);
 		for (int x = 0; x < outputImg.getWidth(); x++) {
 			for (int y = 0; y < outputImg.getHeight(); y++) {
-				if (maze[y][x]) {
-					outputImg.setRGB(x, y, Color.white.getRGB());
-				}
-				else {
-					outputImg.setRGB(x, y, Color.black.getRGB());
-				}
+				setMatchingColour(maze, outputImg, x, y);
 			}
 		}
 
