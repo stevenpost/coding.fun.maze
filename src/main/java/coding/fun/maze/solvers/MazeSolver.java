@@ -1,5 +1,8 @@
 package coding.fun.maze.solvers;
 
+import java.io.File;
+import java.io.IOException;
+
 import coding.fun.maze.TileType;
 
 public interface MazeSolver {
@@ -7,5 +10,6 @@ public interface MazeSolver {
 	void solve();
 	TileType[][] getSolvedMaze();
 	void printStatistics();
+	void writeSolutionImage(File output) throws IOException;
 
 }

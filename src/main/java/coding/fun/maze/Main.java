@@ -2,6 +2,7 @@ package coding.fun.maze;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -12,29 +13,64 @@ import coding.fun.maze.solvers.RecursiveSolver;
 public class Main {
 
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());
+	private static final MazeImageHandler IMAGE_HANDLER = new MazeImageHandler();
 
 	public static void main(String[] args) throws IOException {
+
 		long startTime = System.currentTimeMillis();
 
-		File imageFile = new File("src/main/resources/tiny.png");
-		File solvedMazeImage = new File("solved.png");
-
-		MazeImageHandler imageHandler = new MazeImageHandler();
-
-		boolean[][] maze = loadMaze(imageFile, imageHandler);
-
-		List<Node> nodes = createNodes(maze);
-
-		MazeSolver solver = new RecursiveSolver(maze);
-		solveMaze(solver);
-
-		MazeSolver nodeSolver = new RecursiveNodeSolver(nodes.get(0), maze.length);
-		solveMaze(nodeSolver);
-
-		writeOutput(solvedMazeImage, imageHandler, solver);
+		File inputFolder = new File("src/main/resources/input");
+		File outputParent = new File("src/main/resources/output");
+		File[] filelist = inputFolder.listFiles();
+		Arrays.sort(filelist, new FileNameComparator());
+		for (File input : filelist) {
+			solveMazeWithAllAlgorithms(outputParent, input);
+		}
 
 		long endtime = System.currentTimeMillis();
 		LOG.info("Total runtime: " + (endtime - startTime) + " ms");
+	}
+
+	private static void solveMazeWithAllAlgorithms(File outputParent, File input) throws IOException {
+		LOG.info("Attempting " + input.getName());
+
+		boolean[][] maze = loadMaze(input, IMAGE_HANDLER);
+
+		List<Node> nodes = createNodes(maze);
+
+		File resursiveFolder = new File(outputParent, "recursive");
+		resursiveFolder.mkdirs();
+		File recursive = new File(resursiveFolder, input.getName());
+		try {
+			solveRecursive(maze, recursive);
+		}
+		catch (@SuppressWarnings("unused") StackOverflowError soe) {
+			LOG.severe("Recursing to deep on " + input.getName());
+		}
+
+		File resursiveNodeFolder = new File(outputParent, "recursivenodes");
+		resursiveNodeFolder.mkdirs();
+		File recursiveNode = new File(resursiveNodeFolder, input.getName());
+		try {
+			solveRecursiveNode(maze, recursiveNode, nodes);
+		}
+		catch (@SuppressWarnings("unused") StackOverflowError soe) {
+			LOG.severe("Recursing nodes to deep on " + input.getName());
+		}
+	}
+
+	private static void solveRecursive(boolean[][] maze, File output) throws IOException {
+		MazeSolver solver = new RecursiveSolver(maze);
+		solveMazeTimed(solver);
+
+		writeOutput(output, solver);
+	}
+
+	private static void solveRecursiveNode(boolean[][] maze, File output, List<Node> nodes) throws IOException {
+		MazeSolver solver = new RecursiveNodeSolver((VisitableNode) nodes.get(0), maze.length, maze);
+		solveMazeTimed(solver);
+
+		writeOutput(output, solver);
 	}
 
 	private static boolean[][] loadMaze(File imageFile, MazeImageHandler imageHandler) throws IOException {
@@ -55,15 +91,14 @@ public class Main {
 		return nodes;
 	}
 
-	private static void writeOutput(File outputImage, MazeImageHandler imageHandler,
-	                                MazeSolver solver) throws IOException {
+	private static void writeOutput(File outputImage, MazeSolver solver) throws IOException {
 		long startTime = System.currentTimeMillis();
-		imageHandler.writeOutputMaze(solver.getSolvedMaze(), outputImage);
+		solver.writeSolutionImage(outputImage);
 		long endtime = System.currentTimeMillis();
 		LOG.info("Output written in " + (endtime - startTime) + " ms");
 	}
 
-	private static void solveMaze(MazeSolver solver) {
+	private static void solveMazeTimed(MazeSolver solver) {
 		long startTime = System.currentTimeMillis();
 		solver.solve();
 		long endtime = System.currentTimeMillis();

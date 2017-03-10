@@ -1,5 +1,9 @@
 package coding.fun.maze.solvers;
 
+import java.io.File;
+import java.io.IOException;
+
+import coding.fun.maze.MazeImageHandler;
 import coding.fun.maze.Position;
 import coding.fun.maze.TileType;
 
@@ -114,6 +118,12 @@ public class RecursiveSolver implements MazeSolver {
 		System.out.println("Method: " + this.getClass().getName());
 		System.out.println("Number of steps taken: " + this.nrOfSteps);
 		System.out.println("Number of times we had to backtrack: " + this.nrOfBackTracks);
+	}
+
+	@Override
+	public void writeSolutionImage(File output) throws IOException {
+		MazeImageHandler handler = new MazeImageHandler();
+		handler.writeOutputMaze(this.solvedMaze, output);
 	}
 
 }

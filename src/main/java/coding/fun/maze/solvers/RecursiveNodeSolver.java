@@ -1,18 +1,24 @@
 package coding.fun.maze.solvers;
 
-import coding.fun.maze.Node;
+import java.io.File;
+import java.io.IOException;
+
+import coding.fun.maze.MazeImageHandler;
 import coding.fun.maze.TileType;
+import coding.fun.maze.VisitableNode;
 
 public class RecursiveNodeSolver implements MazeSolver {
 
-	private final Node startNode;
+	private final VisitableNode startNode;
 	private final int heigth;
 	private int nrOfSteps = 0;
 	private int nrOfBackTracks = 0;
+	private final boolean[][] maze;
 
-	public RecursiveNodeSolver(Node startNode, int height) {
+	public RecursiveNodeSolver(VisitableNode startNode, int height, boolean[][] maze) {
 		this.startNode = startNode;
 		this.heigth = height;
+		this.maze = maze;
 	}
 
 	@Override
@@ -20,28 +26,42 @@ public class RecursiveNodeSolver implements MazeSolver {
 		step(this.startNode);
 	}
 
-	private boolean step(Node n) {
+	private boolean step(VisitableNode currentNode) {
 		this.nrOfSteps++;
-		if (n.getPosition().getY() == this.heigth -1) {
+		currentNode.setVisited(true);
+		if (currentNode.getPosition().getY() == this.heigth -1) {
 			return true;
 		}
 
+		VisitableNode nextNode;
+
 		// down
-		if (n.getLinkDown() != null && step(n.getLinkDown())) {
+		nextNode = (VisitableNode) currentNode.getLinkDown();
+		if (nextNode != null && !nextNode.isVisited() && step(nextNode)) {
 			return true;
 		}
+		currentNode.unlinkDown();
+
 		// right
-		if (n.getLinkRight() != null && step(n.getLinkRight())) {
+		nextNode = (VisitableNode) currentNode.getLinkRight();
+		if (nextNode != null && !nextNode.isVisited() && step(nextNode)) {
 			return true;
 		}
+		currentNode.unlinkRight();
+
 		// left
-		if (n.getLinkLeft() != null && step(n.getLinkLeft())) {
+		nextNode = (VisitableNode) currentNode.getLinkLeft();
+		if (nextNode != null && !nextNode.isVisited() && step(nextNode)) {
 			return true;
 		}
+		currentNode.unlinkLeft();
+
 		// up
-		if (n.getLinkUp() != null && step(n.getLinkUp())) {
+		nextNode = (VisitableNode) currentNode.getLinkUp();
+		if (nextNode != null && !nextNode.isVisited() && step(nextNode)) {
 			return true;
 		}
+		currentNode.unlinkUp();
 
 		this.nrOfBackTracks++;
 		return false;
@@ -49,8 +69,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 
 	@Override
 	public TileType[][] getSolvedMaze() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
 	@Override
@@ -58,6 +77,12 @@ public class RecursiveNodeSolver implements MazeSolver {
 		System.out.println("Method: " + this.getClass().getName());
 		System.out.println("Number of steps taken: " + this.nrOfSteps);
 		System.out.println("Number of times we had to backtrack: " + this.nrOfBackTracks);
+	}
+
+	@Override
+	public void writeSolutionImage(File output) throws IOException {
+		MazeImageHandler handler = new MazeImageHandler();
+		handler.writeSolutionForNodes(this.maze, output, this.startNode);
 	}
 
 }

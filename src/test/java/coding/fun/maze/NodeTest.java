@@ -9,7 +9,7 @@ public class NodeTest {
 	@Test
 	public void testGetPosition() {
 		Position pos = new Position(0, 0);
-		Node n = new Node(pos);
+		SimpleNode n = new SimpleNode(pos);
 
 		assertEquals(pos, n.getPosition());
 	}
@@ -17,10 +17,10 @@ public class NodeTest {
 	@Test
 	public void Vertical() {
 		Position pos = new Position(0, 1);
-		Node n = new Node(pos);
+		SimpleNode n = new SimpleNode(pos);
 
 		Position above = pos.up();
-		Node aboveN = new Node(above);
+		SimpleNode aboveN = new SimpleNode(above);
 
 		n.linkUp(aboveN);
 
@@ -31,10 +31,10 @@ public class NodeTest {
 	@Test
 	public void Horizontal() {
 		Position pos = new Position(1, 0);
-		Node n = new Node(pos);
+		SimpleNode n = new SimpleNode(pos);
 
 		Position left = pos.left();
-		Node leftN = new Node(left);
+		SimpleNode leftN = new SimpleNode(left);
 
 		n.linkLeft(leftN);
 

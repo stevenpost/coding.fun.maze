@@ -23,7 +23,7 @@ public class NodeCreator {
 			for (int x = 0; x < this.maze[y].length; x++) {
 				if (isNode(x, y)) {
 					Position pos = new Position(x, y);
-					Node n = new Node(pos);
+					Node n = new VisitableNode(pos);
 					nodes.add(n);
 					this.mazeNodes[y][x] = n;
 					linkPreviousNodes(n);

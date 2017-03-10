@@ -1,64 +1,20 @@
 package coding.fun.maze;
 
-public class Node {
+public interface Node {
 
-	private final Position pos;
+	public Position getPosition();
 
-	private Node up;
-	private Node down;
-	private Node left;
-	private Node right;
-
-	public Node(Position pos) {
-		this.pos = pos;
-	}
-
-	public Position getPosition() {
-		return this.pos;
-	}
-
-	public void linkUp(Node aboveN) {
-		this.up = aboveN;
-		if (aboveN.getLinkDown() != this) {
-			aboveN.linkDown(this);
-		}
-	}
-
-	public void linkDown(Node under) {
-		this.down = under;
-		if (under.getLinkUp() != this) {
-			under.linkUp(this);
-		}
-	}
-
-	public Node getLinkUp() {
-		return this.up;
-	}
-
-	public Node getLinkDown() {
-		return this.down;
-	}
-
-	public void linkLeft(Node leftN) {
-		this.left = leftN;
-		if (leftN.getLinkRight() != this) {
-			leftN.linkRight(this);
-		}
-	}
-
-	private void linkRight(Node rightN) {
-		this.right = rightN;
-		if (rightN.getLinkLeft() != this) {
-			rightN.linkLeft(this);
-		}
-	}
-
-	public Node getLinkLeft() {
-		return this.left;
-	}
-
-	public Node getLinkRight() {
-		return this.right;
-	}
+	public void linkUp(Node aboveN);
+	public void linkDown(Node under);
+	public void linkLeft(Node leftN);
+	public void linkRight(Node rightN);
+	public Node getLinkUp();
+	public Node getLinkDown();
+	public Node getLinkLeft();
+	public Node getLinkRight();
+	public void unlinkUp();
+	public void unlinkDown();
+	public void unlinkLeft();
+	public void unlinkRight();
 
 }
