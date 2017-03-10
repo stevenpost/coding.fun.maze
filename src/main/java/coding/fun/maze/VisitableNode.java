@@ -3,6 +3,7 @@ package coding.fun.maze;
 public class VisitableNode implements Node {
 
 	private boolean visited = false;
+	private final boolean exit;
 	private final Position pos;
 
 	private Node up;
@@ -12,6 +13,43 @@ public class VisitableNode implements Node {
 
 	public VisitableNode(Position pos) {
 		this.pos = pos;
+		this.exit = false;
+	}
+
+	public VisitableNode(Position pos, boolean exit) {
+		this.pos = pos;
+		this.exit = exit;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.pos == null) ? 0 : this.pos.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		VisitableNode other = (VisitableNode) obj;
+		if (this.pos == null) {
+			if (other.pos != null) {
+				return false;
+			}
+		}
+		else if (!this.pos.equals(other.pos)) {
+			return false;
+		}
+		return true;
 	}
 
 	public boolean isVisited() {
@@ -113,6 +151,11 @@ public class VisitableNode implements Node {
 			this.right = null;
 			lright.unlinkLeft();
 		}
+	}
+
+	@Override
+	public boolean isExit() {
+		return this.exit;
 	}
 
 }

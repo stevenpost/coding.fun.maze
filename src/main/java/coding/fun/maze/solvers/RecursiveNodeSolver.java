@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import coding.fun.maze.MazeImageHandler;
+import coding.fun.maze.Node;
 import coding.fun.maze.TileType;
 import coding.fun.maze.VisitableNode;
 
@@ -99,6 +100,11 @@ public class RecursiveNodeSolver implements MazeSolver {
 	public void writeSolutionImage(File output) throws IOException {
 		MazeImageHandler handler = new MazeImageHandler();
 		handler.writeSolutionForNodes(this.maze, output, this.solutionNodes);
+	}
+
+	@Override
+	public List<? extends Node> getSolutionNodes() {
+		return this.solutionNodes;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
+import coding.fun.maze.solvers.DijkstraSolver;
 import coding.fun.maze.solvers.MazeSolver;
 import coding.fun.maze.solvers.RecursiveNodeSolver;
 import coding.fun.maze.solvers.RecursiveSolver;
@@ -36,6 +37,8 @@ public class Main {
 		solveRecursive(input, outputParent);
 
 		solveRecursiveNode(input, outputParent);
+
+		solveDijkstra(input, outputParent);
 	}
 
 	private static void solveRecursive(File input, File outputParent) throws IOException {
@@ -73,6 +76,34 @@ public class Main {
 			LOG.severe("Recursing nodes to deep on " + input.getName());
 		}
 
+	}
+
+	private static void solveDijkstra(File input, File outputParent) throws IOException {
+		boolean[][] maze = loadMaze(input, IMAGE_HANDLER);
+		File resursiveNodeFolder = new File(outputParent, "dijkstra");
+		resursiveNodeFolder.mkdirs();
+		File output = new File(resursiveNodeFolder, input.getName());
+		DijkstraNode startNode = createNodesDijkstra(maze);
+		try {
+			MazeSolver solver = new DijkstraSolver(startNode, maze);
+			solveMazeTimed(solver);
+
+			writeOutput(output, solver);
+		}
+		catch (@SuppressWarnings("unused") StackOverflowError soe) {
+			LOG.severe("Recursing nodes to deep on " + input.getName());
+		}
+
+	}
+
+	private static DijkstraNode createNodesDijkstra(boolean[][] maze) {
+		long startTime = System.currentTimeMillis();
+		NodeCreator creator = new NodeCreator(maze);
+		DijkstraNode startNode = creator.createDijkstraNodes();
+		long endTime = System.currentTimeMillis();
+		int nrOfNodes = creator.getNumberOfCreateNodes();
+		LOG.info("Created " + nrOfNodes + " node(s) in " + (endTime - startTime) + " ms");
+		return startNode;
 	}
 
 	private static boolean[][] loadMaze(File imageFile, MazeImageHandler imageHandler) throws IOException {

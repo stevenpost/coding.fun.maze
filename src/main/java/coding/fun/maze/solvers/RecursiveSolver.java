@@ -2,8 +2,10 @@ package coding.fun.maze.solvers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import coding.fun.maze.MazeImageHandler;
+import coding.fun.maze.Node;
 import coding.fun.maze.Position;
 import coding.fun.maze.TileType;
 
@@ -120,6 +122,11 @@ public class RecursiveSolver implements MazeSolver {
 	public void writeSolutionImage(File output) throws IOException {
 		MazeImageHandler handler = new MazeImageHandler();
 		handler.writeOutputMaze(this.solvedMaze, output);
+	}
+
+	@Override
+	public List<? extends Node> getSolutionNodes() {
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 }

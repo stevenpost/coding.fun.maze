@@ -21,7 +21,28 @@ public class NodeCreator {
 			for (int x = 0; x < this.maze[y].length; x++) {
 				if (isNode(x, y)) {
 					Position pos = new Position(x, y);
-					Node n = new VisitableNode(pos);
+					boolean exitNode = (y == this.heigth -1);
+					Node n = new VisitableNode(pos, exitNode);
+					this.nrOfCreateNodes++;
+					if (startNode == null) {
+						startNode = n;
+					}
+					this.mazeNodes[y][x] = n;
+					linkPreviousNodes(n);
+				}
+			}
+		}
+		return startNode;
+	}
+
+	public DijkstraNode createDijkstraNodes() {
+		DijkstraNode startNode = null;
+		for (int y = 0; y < this.maze.length; y++) {
+			for (int x = 0; x < this.maze[y].length; x++) {
+				if (isNode(x, y)) {
+					Position pos = new Position(x, y);
+					boolean exitNode = (y == this.heigth -1);
+					DijkstraNode n = new DijkstraNode(pos, -1, exitNode);
 					this.nrOfCreateNodes++;
 					if (startNode == null) {
 						startNode = n;

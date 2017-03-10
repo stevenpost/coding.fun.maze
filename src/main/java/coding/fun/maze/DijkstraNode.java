@@ -1,59 +1,62 @@
 package coding.fun.maze;
 
-public class SimpleNode implements Node {
+public class DijkstraNode implements Node, Comparable<DijkstraNode> {
 
 	private final Position pos;
+	private final boolean exit;
+	private DijkstraNode shortestPath;
+	private int weigth = 0;
+
+	public void setWeigth(int weigth) {
+		this.weigth = weigth;
+	}
 
 	private Node up;
 	private Node down;
 	private Node left;
 	private Node right;
-	private final boolean exit;
 
-	public SimpleNode(Position pos) {
+	public DijkstraNode(Position pos, int weigth) {
 		this.pos = pos;
+		this.weigth = weigth;
 		this.exit = false;
 	}
 
-	public SimpleNode(Position pos, boolean exit) {
+	public DijkstraNode(Position pos, int weigth, boolean exit) {
 		this.pos = pos;
+		this.weigth = weigth;
 		this.exit = exit;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.pos == null) ? 0 : this.pos.hashCode());
-		return result;
+	public DijkstraNode(Position pos, DijkstraNode shortestPath, int weigth) {
+		this.pos = pos;
+		this.shortestPath = shortestPath;
+		this.weigth = weigth;
+		this.exit = false;
+	}
+
+	public DijkstraNode(Position pos, DijkstraNode shortestPath, int weigth, boolean exit) {
+		this.pos = pos;
+		this.shortestPath = shortestPath;
+		this.weigth = weigth;
+		this.exit = exit;
+	}
+
+	public DijkstraNode getShortestPath() {
+		return this.shortestPath;
+	}
+
+	public void setShortestPath(DijkstraNode shortestPath) {
+		this.shortestPath = shortestPath;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		SimpleNode other = (SimpleNode) obj;
-		if (this.pos == null) {
-			if (other.pos != null) {
-				return false;
-			}
-		}
-		else if (!this.pos.equals(other.pos)) {
-			return false;
-		}
-		return true;
+	public int compareTo(DijkstraNode o) {
+		return this.weigth - o.weigth;
 	}
 
-	@Override
-	public Position getPosition() {
-		return this.pos;
+	public int getWeigth() {
+		return this.weigth;
 	}
 
 	@Override
@@ -106,6 +109,11 @@ public class SimpleNode implements Node {
 	@Override
 	public Node getLinkRight() {
 		return this.right;
+	}
+
+	@Override
+	public Position getPosition() {
+		return this.pos;
 	}
 
 	@Override

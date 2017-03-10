@@ -128,9 +128,6 @@ public class MazeImageHandler {
 			Position pos = currentNode.getPosition();
 			Position previousPos = previousNode.getPosition();
 
-			if (maze.length == 401) {
-				System.out.println("Now coloring " + pos.toString());
-			}
 			outputImg.setRGB(pos.getX(), pos.getY(), Color.RED.getRGB());
 
 			fillBetweenNodes(outputImg, pos, previousPos);
