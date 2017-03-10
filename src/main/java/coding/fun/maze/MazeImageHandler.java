@@ -95,35 +95,7 @@ public class MazeImageHandler {
 			Position previousPos = previousNode.getPosition();
 			outputImg.setRGB(pos.getX(), pos.getY(), Color.RED.getRGB());
 
-			// fill in between nodes
-			int startX;
-			int endX;
-			if (previousPos.getX() < pos.getX()) {
-				startX = previousPos.getX();
-				endX = pos.getX();
-			}
-			else {
-				startX = pos.getX();
-				endX = previousPos.getX();
-			}
-
-			int startY;
-			int endY;
-			if (previousPos.getY() < pos.getY()) {
-				startY = previousPos.getY();
-				endY = pos.getY();
-			}
-			else {
-				startY = pos.getY();
-				endY = previousPos.getY();
-			}
-
-			for (int x = startX; x < endX; x++) {
-				outputImg.setRGB(x, startY, Color.RED.getRGB());
-			}
-			for (int y = startY; y < endY; y++) {
-				outputImg.setRGB(startX, y, Color.RED.getRGB());
-			}
+			fillBetweenNodes(outputImg, pos, previousPos);
 
 			previousNode = currentNode;
 			currentNode = getNextNode(currentNode);
@@ -131,6 +103,38 @@ public class MazeImageHandler {
 
 		ImageIO.write(outputImg, "png", output);
 
+	}
+
+	private void fillBetweenNodes(BufferedImage outputImg, Position pos, Position previousPos) {
+		// fill in between nodes
+		int startX;
+		int endX;
+		if (previousPos.getX() < pos.getX()) {
+			startX = previousPos.getX();
+			endX = pos.getX();
+		}
+		else {
+			startX = pos.getX();
+			endX = previousPos.getX();
+		}
+
+		int startY;
+		int endY;
+		if (previousPos.getY() < pos.getY()) {
+			startY = previousPos.getY();
+			endY = pos.getY();
+		}
+		else {
+			startY = pos.getY();
+			endY = previousPos.getY();
+		}
+
+		for (int x = startX; x < endX; x++) {
+			outputImg.setRGB(x, startY, Color.RED.getRGB());
+		}
+		for (int y = startY; y < endY; y++) {
+			outputImg.setRGB(startX, y, Color.RED.getRGB());
+		}
 	}
 
 	private Node getNextNode(Node currentNode) {
