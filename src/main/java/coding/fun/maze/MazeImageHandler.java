@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -12,6 +13,11 @@ public class MazeImageHandler {
 	public boolean[][] loadMaze(File file) throws IOException {
 		BufferedImage img = ImageIO.read(file);
 		return convertToBooleanArray(img);
+	}
+
+	public TileType[][] loadMazeTileType(File file) throws IOException {
+		BufferedImage img = ImageIO.read(file);
+		return convertToTileTypeArray(img);
 	}
 
 	private boolean[][] convertToBooleanArray(BufferedImage img) {
@@ -28,6 +34,30 @@ public class MazeImageHandler {
 					case -1:
 						// White
 						array[row][col] = true;
+						break;
+					default:
+						throw new IllegalArgumentException("This is a strange pixel (" + row + ";" + col + "): " + pixel);
+				}
+			}
+		}
+
+		return array;
+	}
+
+	private TileType[][] convertToTileTypeArray(BufferedImage img) {
+		TileType[][] array = new TileType[img.getHeight()][img.getWidth()];
+
+		for(int row = 0; row < array.length; row++) {
+			for(int col = 0; col < array[row].length; col++) {
+				int pixel = img.getRGB(col, row);
+				switch (pixel) {
+					case -16777216:
+						// Black
+						array[row][col] = TileType.WALL;
+						break;
+					case -1:
+						// White
+						array[row][col] = TileType.FREE;
 						break;
 					default:
 						throw new IllegalArgumentException("This is a strange pixel (" + row + ";" + col + "): " + pixel);
