@@ -37,31 +37,39 @@ public class RecursiveNodeSolver implements MazeSolver {
 
 		// down
 		nextNode = (VisitableNode) currentNode.getLinkDown();
-		if (nextNode != null && !nextNode.isVisited() && step(nextNode)) {
-			return true;
+		if (nextNode != null && !nextNode.isVisited()) {
+			if (step(nextNode)) {
+				return true;
+			}
+			currentNode.unlinkDown();
 		}
-		currentNode.unlinkDown();
 
 		// right
 		nextNode = (VisitableNode) currentNode.getLinkRight();
-		if (nextNode != null && !nextNode.isVisited() && step(nextNode)) {
-			return true;
+		if (nextNode != null && !nextNode.isVisited()) {
+			if (step(nextNode)) {
+				return true;
+			}
+			currentNode.unlinkRight();
 		}
-		currentNode.unlinkRight();
 
 		// left
 		nextNode = (VisitableNode) currentNode.getLinkLeft();
-		if (nextNode != null && !nextNode.isVisited() && step(nextNode)) {
-			return true;
+		if (nextNode != null && !nextNode.isVisited()) {
+			if (step(nextNode)) {
+				return true;
+			}
+			currentNode.unlinkLeft();
 		}
-		currentNode.unlinkLeft();
 
 		// up
 		nextNode = (VisitableNode) currentNode.getLinkUp();
-		if (nextNode != null && !nextNode.isVisited() && step(nextNode)) {
-			return true;
+		if (nextNode != null && !nextNode.isVisited()) {
+			if (step(nextNode)) {
+				return true;
+			}
+			currentNode.unlinkUp();
 		}
-		currentNode.unlinkUp();
 
 		this.nrOfBackTracks++;
 		return false;
