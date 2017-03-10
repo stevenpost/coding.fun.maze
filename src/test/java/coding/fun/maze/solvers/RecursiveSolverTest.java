@@ -8,6 +8,7 @@ import org.junit.Test;
 import coding.fun.maze.Position;
 import coding.fun.maze.TileType;
 
+@SuppressWarnings("static-method")
 public class RecursiveSolverTest {
 
 	@Test
