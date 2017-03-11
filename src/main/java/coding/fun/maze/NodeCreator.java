@@ -1,9 +1,12 @@
 package coding.fun.maze;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class NodeCreator {
 
 	private final boolean[][] maze;
-	private final Node[][] mazeNodes;
+	private final Map<Position, Node> mazeNodes = new HashMap<>();
 	private final int heigth;
 	private final int width;
 	private int nrOfCreateNodes = 0;
@@ -12,7 +15,6 @@ public class NodeCreator {
 		this.maze = maze;
 		this.heigth = maze.length;
 		this.width = maze[0].length;
-		this.mazeNodes = new Node[this.heigth][this.width];
 	}
 
 	public Node createNodes() {
@@ -27,7 +29,7 @@ public class NodeCreator {
 					if (startNode == null) {
 						startNode = n;
 					}
-					this.mazeNodes[y][x] = n;
+					this.mazeNodes.put(pos, n);
 					linkPreviousNodes(n);
 				}
 			}
@@ -47,7 +49,7 @@ public class NodeCreator {
 					if (startNode == null) {
 						startNode = n;
 					}
-					this.mazeNodes[y][x] = n;
+					this.mazeNodes.put(pos, n);
 					linkPreviousNodes(n);
 				}
 			}
@@ -66,7 +68,7 @@ public class NodeCreator {
 		int x = pos.getX() - 1;
 		int y = pos.getY();
 		while (x >= 0 && this.maze[y][x]) {
-			Node leftN = this.mazeNodes[y][x];
+			Node leftN = this.mazeNodes.get(new Position(x, y));
 			if (leftN != null) {
 				n.linkLeft(leftN);
 				break;
@@ -81,7 +83,7 @@ public class NodeCreator {
 		int x = pos.getX();
 		int y = pos.getY() - 1;
 		while (y >= 0 && this.maze[y][x]) {
-			Node aboveN = this.mazeNodes[y][x];
+			Node aboveN = this.mazeNodes.get(new Position(x, y));
 			if (aboveN != null) {
 				n.linkUp(aboveN);
 				break;
