@@ -66,6 +66,7 @@ public class Main {
 		resursiveNodeFolder.mkdirs();
 		File output = new File(resursiveNodeFolder, input.getName());
 		Node startNode = createNodes(maze);
+
 		try {
 			MazeSolver solver = new RecursiveNodeSolver((VisitableNode) startNode, maze.length);
 			maze = null;
@@ -128,6 +129,7 @@ public class Main {
 
 	private static Node createNodes(boolean[][] maze) {
 		long startTime = System.currentTimeMillis();
+		LOG.info("Start creating nodes");
 		NodeCreator creator = new NodeCreator(maze);
 		Node startNode = creator.createNodes();
 		long endTime = System.currentTimeMillis();
