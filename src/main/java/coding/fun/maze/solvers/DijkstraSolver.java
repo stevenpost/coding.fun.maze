@@ -84,13 +84,6 @@ public class DijkstraSolver implements MazeSolver {
 
 	}
 
-	private void replaceInPrioQ(DijkstraNode newNode, DijkstraNode oldNode) {
-		if (this.priorityQ.contains(oldNode)) {
-			this.priorityQ.remove(oldNode);
-			this.priorityQ.add(newNode);
-		}
-	}
-
 	private int calculateWeigth(Position position, Position position2) {
 		int xWeight = Math.abs(position.getX() - position2.getX());
 		int yWeight = Math.abs(position.getY() - position2.getY());
