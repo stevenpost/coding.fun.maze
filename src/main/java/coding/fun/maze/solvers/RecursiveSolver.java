@@ -119,7 +119,7 @@ public class RecursiveSolver implements MazeSolver {
 	}
 
 	@Override
-	public void writeSolutionImage(File output) throws IOException {
+	public void writeSolutionImage(File input, File output) throws IOException {
 		MazeImageHandler handler = new MazeImageHandler();
 		handler.writeOutputMaze(this.solvedMaze, output);
 	}

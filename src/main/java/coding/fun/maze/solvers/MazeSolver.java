@@ -12,7 +12,7 @@ public interface MazeSolver {
 	void solve();
 	TileType[][] getSolvedMaze();
 	void printStatistics();
-	void writeSolutionImage(File output) throws IOException;
+	void writeSolutionImage(File input, File output) throws IOException;
 	List<? extends Node> getSolutionNodes();
 
 }

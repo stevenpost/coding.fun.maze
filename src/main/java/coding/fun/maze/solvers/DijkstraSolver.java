@@ -19,12 +19,10 @@ public class DijkstraSolver implements MazeSolver {
 	private final LinkedList<Node> solutionNodes = new LinkedList<>();
 	private final PriorityQueue<DijkstraNode> priorityQ = new PriorityQueue<>();
 	private boolean solved = false;
-	private final boolean[][] maze;
 	private int expandedNodes = 0;
 
-	public DijkstraSolver(DijkstraNode startNode, boolean[][] maze) {
+	public DijkstraSolver(DijkstraNode startNode) {
 		this.startNode = startNode;
-		this.maze = maze;
 	}
 
 	@Override
@@ -103,9 +101,9 @@ public class DijkstraSolver implements MazeSolver {
 	}
 
 	@Override
-	public void writeSolutionImage(File output) throws IOException {
+	public void writeSolutionImage(File input, File output) throws IOException {
 		MazeImageHandler handler = new MazeImageHandler();
-		handler.writeSolutionForNodes(this.maze, output, this.solutionNodes);
+		handler.writeSolutionForNodes(input, output, this.solutionNodes);
 	}
 
 	@Override

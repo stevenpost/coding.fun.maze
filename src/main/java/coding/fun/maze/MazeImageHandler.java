@@ -121,6 +121,46 @@ public class MazeImageHandler {
 			}
 		}
 
+		drawSolution(solutionNodes, outputImg);
+
+		ImageIO.write(outputImg, "png", output);
+
+	}
+
+	public void writeSolutionForNodes(File input, File output, List<? extends Node> solutionNodes) throws IOException {
+		BufferedImage inputImg = ImageIO.read(input);
+		int height = inputImg.getHeight();
+		int width = inputImg.getWidth();
+		BufferedImage outputImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+		copyMazeImage(inputImg, height, width, outputImg);
+
+		drawSolution(solutionNodes, outputImg);
+
+		ImageIO.write(outputImg, "png", output);
+	}
+
+	private void copyMazeImage(BufferedImage inputImg, int height, int width, BufferedImage outputImg) {
+		for(int y = 0; y < height; y++) {
+			for(int x = 0; x < width; x++) {
+				int pixel = inputImg.getRGB(x, y);
+				switch (pixel) {
+					case -16777216:
+						// Black
+						outputImg.setRGB(x, y, Color.black.getRGB());
+						break;
+					case -1:
+						// White
+						outputImg.setRGB(x, y, Color.white.getRGB());
+						break;
+					default:
+						throw new IllegalArgumentException("This is a strange pixel (" + x + ";" + y + "): " + pixel);
+				}
+			}
+		}
+	}
+
+	private void drawSolution(List<? extends Node> solutionNodes, BufferedImage outputImg) {
 		Node currentNode;
 		Node previousNode = solutionNodes.get(0);
 		for (Node n : solutionNodes) {
@@ -134,9 +174,6 @@ public class MazeImageHandler {
 
 			previousNode = currentNode;
 		}
-
-		ImageIO.write(outputImg, "png", output);
-
 	}
 
 	private void fillBetweenNodes(BufferedImage outputImg, Position pos, Position previousPos) {

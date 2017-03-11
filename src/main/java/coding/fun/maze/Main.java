@@ -51,7 +51,7 @@ public class Main {
 			MazeSolver solver = new RecursiveSolver(maze);
 			solveMazeTimed(solver);
 
-			writeOutput(output, solver);
+			writeOutput(input, output, solver);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
 			LOG.severe("Recursing to deep on " + input.getName());
@@ -67,10 +67,11 @@ public class Main {
 		File output = new File(resursiveNodeFolder, input.getName());
 		Node startNode = createNodes(maze);
 		try {
-			MazeSolver solver = new RecursiveNodeSolver((VisitableNode) startNode, maze.length, maze);
+			MazeSolver solver = new RecursiveNodeSolver((VisitableNode) startNode, maze.length);
+			maze = null;
 			solveMazeTimed(solver);
 
-			writeOutput(output, solver);
+			writeOutput(input, output, solver);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
 			LOG.severe("Recursing nodes to deep on " + input.getName());
@@ -84,11 +85,12 @@ public class Main {
 		resursiveNodeFolder.mkdirs();
 		File output = new File(resursiveNodeFolder, input.getName());
 		DijkstraNode startNode = createNodesDijkstra(maze);
+		maze = null;
 		try {
-			MazeSolver solver = new DijkstraSolver(startNode, maze);
+			MazeSolver solver = new DijkstraSolver(startNode);
 			solveMazeTimed(solver);
 
-			writeOutput(output, solver);
+			writeOutput(input, output, solver);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
 			LOG.severe("Recursing nodes to deep on " + input.getName());
@@ -134,9 +136,9 @@ public class Main {
 		return startNode;
 	}
 
-	private static void writeOutput(File outputImage, MazeSolver solver) throws IOException {
+	private static void writeOutput(File inputImage, File outputImage, MazeSolver solver) throws IOException {
 		long startTime = System.currentTimeMillis();
-		solver.writeSolutionImage(outputImage);
+		solver.writeSolutionImage(inputImage, outputImage);
 		long endtime = System.currentTimeMillis();
 		LOG.info("Output written in " + (endtime - startTime) + " ms");
 	}

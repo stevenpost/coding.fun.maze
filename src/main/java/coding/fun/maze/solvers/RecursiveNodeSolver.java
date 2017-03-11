@@ -16,13 +16,11 @@ public class RecursiveNodeSolver implements MazeSolver {
 	private final int heigth;
 	private int nrOfSteps = 0;
 	private int nrOfBackTracks = 0;
-	private final boolean[][] maze;
 	private final List<VisitableNode> solutionNodes = new ArrayList<>();
 
-	public RecursiveNodeSolver(VisitableNode startNode, int height, boolean[][] maze) {
+	public RecursiveNodeSolver(VisitableNode startNode, int height) {
 		this.startNode = startNode;
 		this.heigth = height;
-		this.maze = maze;
 	}
 
 	@Override
@@ -97,9 +95,9 @@ public class RecursiveNodeSolver implements MazeSolver {
 	}
 
 	@Override
-	public void writeSolutionImage(File output) throws IOException {
+	public void writeSolutionImage(File input, File output) throws IOException {
 		MazeImageHandler handler = new MazeImageHandler();
-		handler.writeSolutionForNodes(this.maze, output, this.solutionNodes);
+		handler.writeSolutionForNodes(input, output, this.solutionNodes);
 	}
 
 	@Override
