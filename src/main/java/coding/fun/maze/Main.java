@@ -98,6 +98,7 @@ public class Main {
 	private static DijkstraNode createNodesDijkstra(File input) throws IOException {
 		long startTime = System.currentTimeMillis();
 		NodeCreator creator = new NodeCreator(input);
+		LOG.info("Start creating nodes");
 		DijkstraNode startNode = creator.createDijkstraNodes();
 		long endTime = System.currentTimeMillis();
 		int nrOfNodes = creator.getNumberOfCreateNodes();
