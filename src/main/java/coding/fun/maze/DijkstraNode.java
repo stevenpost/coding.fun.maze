@@ -2,8 +2,9 @@ package coding.fun.maze;
 
 public class DijkstraNode implements Node, Comparable<DijkstraNode> {
 
-	private final Position pos;
 	private final boolean exit;
+	private final int xPos;
+	private final int yPos;
 	private DijkstraNode shortestPath;
 	private int weigth = 0;
 
@@ -17,29 +18,33 @@ public class DijkstraNode implements Node, Comparable<DijkstraNode> {
 	private Node right;
 
 	public DijkstraNode(Position pos, int weigth) {
-		this.pos = pos;
 		this.weigth = weigth;
 		this.exit = false;
+		this.xPos = pos.getX();
+		this.yPos = pos.getY();
 	}
 
 	public DijkstraNode(Position pos, int weigth, boolean exit) {
-		this.pos = pos;
 		this.weigth = weigth;
 		this.exit = exit;
+		this.xPos = pos.getX();
+		this.yPos = pos.getY();
 	}
 
 	public DijkstraNode(Position pos, DijkstraNode shortestPath, int weigth) {
-		this.pos = pos;
 		this.shortestPath = shortestPath;
 		this.weigth = weigth;
 		this.exit = false;
+		this.xPos = pos.getX();
+		this.yPos = pos.getY();
 	}
 
 	public DijkstraNode(Position pos, DijkstraNode shortestPath, int weigth, boolean exit) {
-		this.pos = pos;
 		this.shortestPath = shortestPath;
 		this.weigth = weigth;
 		this.exit = exit;
+		this.xPos = pos.getX();
+		this.yPos = pos.getY();
 	}
 
 	public DijkstraNode getShortestPath() {
@@ -113,7 +118,7 @@ public class DijkstraNode implements Node, Comparable<DijkstraNode> {
 
 	@Override
 	public Position getPosition() {
-		return this.pos;
+		return new Position(this.xPos, this.yPos);
 	}
 
 	@Override

@@ -4,7 +4,8 @@ public class VisitableNode implements Node {
 
 	private boolean visited = false;
 	private final boolean exit;
-	private final Position pos;
+	private final int xPos;
+	private final int yPos;
 
 	private Node up;
 	private Node down;
@@ -12,20 +13,23 @@ public class VisitableNode implements Node {
 	private Node right;
 
 	public VisitableNode(Position pos) {
-		this.pos = pos;
 		this.exit = false;
+		this.xPos = pos.getX();
+		this.yPos = pos.getY();
 	}
 
 	public VisitableNode(Position pos, boolean exit) {
-		this.pos = pos;
 		this.exit = exit;
+		this.xPos = pos.getX();
+		this.yPos = pos.getY();
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.pos == null) ? 0 : this.pos.hashCode());
+		result = prime * result + this.xPos;
+		result = prime * result + this.yPos;
 		return result;
 	}
 
@@ -41,12 +45,10 @@ public class VisitableNode implements Node {
 			return false;
 		}
 		VisitableNode other = (VisitableNode) obj;
-		if (this.pos == null) {
-			if (other.pos != null) {
-				return false;
-			}
+		if (this.xPos != other.xPos) {
+			return false;
 		}
-		else if (!this.pos.equals(other.pos)) {
+		if (this.yPos != other.yPos) {
 			return false;
 		}
 		return true;
@@ -114,7 +116,7 @@ public class VisitableNode implements Node {
 
 	@Override
 	public Position getPosition() {
-		return this.pos;
+		return new Position(this.xPos, this.yPos);
 	}
 
 	@Override
