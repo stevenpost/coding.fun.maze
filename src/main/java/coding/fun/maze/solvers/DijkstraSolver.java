@@ -56,8 +56,10 @@ public class DijkstraSolver implements MazeSolver {
 		this.solutionNodes.addLast(n);
 
 		DijkstraNode currentDNode = this.endNode;
+		currentDNode.unlinkAll();
 		while (currentDNode.getShortestPath() != null) {
 			Node nextNode = currentDNode.getShortestPath();
+			nextNode.unlinkAll();
 			this.solutionNodes.addLast(nextNode);
 			currentDNode = currentDNode.getShortestPath();
 		}
