@@ -1,26 +1,32 @@
 package coding.fun.maze;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 public class NodeCreator {
 
-	private final boolean[][] maze;
+	private final BufferedImage mazeImg;
 	private final Map<Position, Node> mazeNodes = new HashMap<>();
 	private final int heigth;
 	private final int width;
 	private int nrOfCreateNodes = 0;
 
-	public NodeCreator(boolean[][] maze) {
-		this.maze = maze;
-		this.heigth = maze.length;
-		this.width = maze[0].length;
+	public NodeCreator(File mazeImage) throws IOException {
+		this.mazeImg = ImageIO.read(mazeImage);
+		this.heigth = this.mazeImg.getHeight();
+		this.width = this.mazeImg.getWidth();
 	}
 
 	public Node createNodes() {
+
 		Node startNode = null;
-		for (int y = 0; y < this.maze.length; y++) {
-			for (int x = 0; x < this.maze[y].length; x++) {
+		for (int y = 0; y < this.heigth; y++) {
+			for (int x = 0; x < this.width; x++) {
 				if (isNode(x, y)) {
 					Position pos = new Position(x, y);
 					boolean exitNode = (y == this.heigth -1);
@@ -39,8 +45,8 @@ public class NodeCreator {
 
 	public DijkstraNode createDijkstraNodes() {
 		DijkstraNode startNode = null;
-		for (int y = 0; y < this.maze.length; y++) {
-			for (int x = 0; x < this.maze[y].length; x++) {
+		for (int y = 0; y < this.heigth; y++) {
+			for (int x = 0; x < this.width; x++) {
 				if (isNode(x, y)) {
 					Position pos = new Position(x, y);
 					boolean exitNode = (y == this.heigth -1);
@@ -67,7 +73,7 @@ public class NodeCreator {
 
 		int x = pos.getX() - 1;
 		int y = pos.getY();
-		while (x >= 0 && this.maze[y][x]) {
+		while (x >= 0 && isPassable(x, y)) {
 			Node leftN = this.mazeNodes.get(new Position(x, y));
 			if (leftN != null) {
 				n.linkLeft(leftN);
@@ -82,7 +88,7 @@ public class NodeCreator {
 
 		int x = pos.getX();
 		int y = pos.getY() - 1;
-		while (y >= 0 && this.maze[y][x]) {
+		while (y >= 0 && isPassable(x, y)) {
 			Node aboveN = this.mazeNodes.get(new Position(x, y));
 			if (aboveN != null) {
 				n.linkUp(aboveN);
@@ -93,7 +99,7 @@ public class NodeCreator {
 	}
 
 	public boolean isNode(int x, int y) {
-		if (!this.maze[y][x]) {
+		if (!isPassable(x, y)) {
 			return false;
 		}
 
@@ -106,22 +112,30 @@ public class NodeCreator {
 		boolean horizontal = false;
 
 		// look up, then down
-		if (y > 0 && this.maze[y - 1][x]) {
+		if (y > 0 && isPassable(x, y - 1)) {
 			vertical = true;
 		}
-		else if (y < (this.heigth -1) && this.maze[y + 1][x]) {
+		else if (y < (this.heigth -1) && isPassable(x, y + 1)) {
 			vertical = true;
 		}
 
 		// look left, then right
-		if (x > 0 && this.maze[y][x - 1]) {
+		if (x > 0 && isPassable(x - 1, y)) {
 			horizontal = true;
 		}
-		else if (x < (this.width - 1) && this.maze[y][x + 1]) {
+		else if (x < (this.width - 1) && isPassable(x + 1, y)) {
 			horizontal = true;
 		}
 
 		return (horizontal && vertical);
+	}
+
+	private boolean isPassable(int x, int y) {
+		int pixel = this.mazeImg.getRGB(x, y);
+		if (pixel == -16777216) {
+			return false;
+		}
+		return true;
 	}
 
 	public int getNumberOfCreateNodes() {

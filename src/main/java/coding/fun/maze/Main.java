@@ -61,15 +61,13 @@ public class Main {
 	}
 
 	private static void solveRecursiveNode(File input, File outputParent) throws IOException {
-		boolean[][] maze = loadMaze(input, IMAGE_HANDLER);
 		File resursiveNodeFolder = new File(outputParent, "recursivenodes");
 		resursiveNodeFolder.mkdirs();
 		File output = new File(resursiveNodeFolder, input.getName());
-		Node startNode = createNodes(maze);
+		Node startNode = createNodes(input);
 
 		try {
-			MazeSolver solver = new RecursiveNodeSolver((VisitableNode) startNode, maze.length);
-			maze = null;
+			MazeSolver solver = new RecursiveNodeSolver((VisitableNode) startNode);
 			solveMazeTimed(solver);
 
 			writeOutput(input, output, solver);
@@ -81,12 +79,10 @@ public class Main {
 	}
 
 	private static void solveDijkstra(File input, File outputParent) throws IOException {
-		boolean[][] maze = loadMaze(input, IMAGE_HANDLER);
 		File resursiveNodeFolder = new File(outputParent, "dijkstra");
 		resursiveNodeFolder.mkdirs();
 		File output = new File(resursiveNodeFolder, input.getName());
-		DijkstraNode startNode = createNodesDijkstra(maze);
-		maze = null;
+		DijkstraNode startNode = createNodesDijkstra(input);
 		try {
 			MazeSolver solver = new DijkstraSolver(startNode);
 			solveMazeTimed(solver);
@@ -99,23 +95,14 @@ public class Main {
 
 	}
 
-	private static DijkstraNode createNodesDijkstra(boolean[][] maze) {
+	private static DijkstraNode createNodesDijkstra(File input) throws IOException {
 		long startTime = System.currentTimeMillis();
-		NodeCreator creator = new NodeCreator(maze);
+		NodeCreator creator = new NodeCreator(input);
 		DijkstraNode startNode = creator.createDijkstraNodes();
 		long endTime = System.currentTimeMillis();
 		int nrOfNodes = creator.getNumberOfCreateNodes();
 		LOG.info("Created " + nrOfNodes + " node(s) in " + (endTime - startTime) + " ms");
 		return startNode;
-	}
-
-	private static boolean[][] loadMaze(File imageFile, MazeImageHandler imageHandler) throws IOException {
-		long startTime = System.currentTimeMillis();
-		LOG.info("Start loading maze");
-		boolean[][] maze = imageHandler.loadMaze(imageFile);
-		long endTime = System.currentTimeMillis();
-		LOG.info("Loaded maze in " + (endTime - startTime) + " ms");
-		return maze;
 	}
 
 	private static TileType[][] loadMazeTileType(File imageFile, MazeImageHandler imageHandler) throws IOException {
@@ -127,10 +114,10 @@ public class Main {
 		return maze;
 	}
 
-	private static Node createNodes(boolean[][] maze) {
+	private static Node createNodes(File input) throws IOException {
 		long startTime = System.currentTimeMillis();
 		LOG.info("Start creating nodes");
-		NodeCreator creator = new NodeCreator(maze);
+		NodeCreator creator = new NodeCreator(input);
 		Node startNode = creator.createNodes();
 		long endTime = System.currentTimeMillis();
 		int nrOfNodes = creator.getNumberOfCreateNodes();

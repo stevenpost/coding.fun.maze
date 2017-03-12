@@ -13,14 +13,12 @@ import coding.fun.maze.VisitableNode;
 public class RecursiveNodeSolver implements MazeSolver {
 
 	private final VisitableNode startNode;
-	private final int heigth;
 	private int nrOfSteps = 0;
 	private int nrOfBackTracks = 0;
 	private final List<VisitableNode> solutionNodes = new ArrayList<>();
 
-	public RecursiveNodeSolver(VisitableNode startNode, int height) {
+	public RecursiveNodeSolver(VisitableNode startNode) {
 		this.startNode = startNode;
-		this.heigth = height;
 	}
 
 	@Override
@@ -32,7 +30,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 	private boolean step(VisitableNode currentNode) {
 		this.nrOfSteps++;
 		currentNode.setVisited(true);
-		if (currentNode.getPosition().getY() == this.heigth -1) {
+		if (currentNode.isExit()) {
 			return true;
 		}
 
