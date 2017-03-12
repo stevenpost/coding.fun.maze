@@ -37,10 +37,19 @@ public class NodeCreator {
 					}
 					this.mazeNodes.put(pos, n);
 					linkPreviousNodes(n);
+					removeNodesAbove(pos);
 				}
 			}
 		}
 		return startNode;
+	}
+
+	private void removeNodesAbove(Position pos) {
+		int x = pos.getX();
+		for (int y = pos.getY()-1; y >= 0; y--) {
+			Position posToRemove = new Position(x, y);
+			this.mazeNodes.remove(posToRemove);
+		}
 	}
 
 	public DijkstraNode createDijkstraNodes() {
@@ -57,6 +66,7 @@ public class NodeCreator {
 					}
 					this.mazeNodes.put(pos, n);
 					linkPreviousNodes(n);
+					removeNodesAbove(pos);
 				}
 			}
 		}
