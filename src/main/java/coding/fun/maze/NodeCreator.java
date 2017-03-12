@@ -1,6 +1,7 @@
 package coding.fun.maze;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,16 +11,17 @@ import javax.imageio.ImageIO;
 
 public class NodeCreator {
 
-	private final BufferedImage mazeImg;
+	private final WritableRaster raster;
 	private final Map<Position, Node> mazeNodes = new HashMap<>();
 	private final int heigth;
 	private final int width;
 	private int nrOfCreateNodes = 0;
 
 	public NodeCreator(File mazeImage) throws IOException {
-		this.mazeImg = ImageIO.read(mazeImage);
-		this.heigth = this.mazeImg.getHeight();
-		this.width = this.mazeImg.getWidth();
+		BufferedImage mazeImg = ImageIO.read(mazeImage);
+		this.raster = mazeImg.getRaster();
+		this.heigth = mazeImg.getHeight();
+		this.width = mazeImg.getWidth();
 	}
 
 	public Node createNodes() {
@@ -143,11 +145,17 @@ public class NodeCreator {
 	}
 
 	private boolean isPassable(int x, int y) {
-		int pixel = this.mazeImg.getRGB(x, y);
-		if (pixel == -16777216) {
-			return false;
+		Object o = this.raster.getDataElements(x, y, null);
+		if (o instanceof byte[]) {
+			byte color = ((byte[])o)[0];
+			if (color == 0) {
+				return false;
+			}
+			return true;
 		}
-		return true;
+
+		throw new IllegalArgumentException("This wasn't an array as expected");
+
 	}
 
 	public int getNumberOfCreateNodes() {
