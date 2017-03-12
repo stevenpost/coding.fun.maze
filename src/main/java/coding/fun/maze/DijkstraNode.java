@@ -139,4 +139,12 @@ public class DijkstraNode implements Node, Comparable<DijkstraNode> {
 		return this.exit;
 	}
 
+	@Override
+	public void unlinkAll() {
+		this.unlinkUp();
+		this.unlinkDown();
+		this.unlinkLeft();
+		this.unlinkRight();
+	}
+
 }

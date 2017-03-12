@@ -16,6 +16,7 @@ public interface Node {
 	public void unlinkDown();
 	public void unlinkLeft();
 	public void unlinkRight();
+	public void unlinkAll();
 
 	public boolean isExit();
 

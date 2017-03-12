@@ -154,4 +154,12 @@ public class VisitableNode implements Node {
 		return this.exit;
 	}
 
+	@Override
+	public void unlinkAll() {
+		this.unlinkUp();
+		this.unlinkDown();
+		this.unlinkLeft();
+		this.unlinkRight();
+	}
+
 }
