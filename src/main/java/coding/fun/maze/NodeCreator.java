@@ -48,7 +48,9 @@ public class NodeCreator {
 		int x = pos.getX();
 		for (int y = pos.getY()-1; y >= 0; y--) {
 			Position posToRemove = new Position(x, y);
-			this.mazeNodes.remove(posToRemove);
+			if (this.mazeNodes.remove(posToRemove) != null) {
+				break;
+			}
 		}
 	}
 
