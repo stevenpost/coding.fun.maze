@@ -15,7 +15,9 @@ public class Main {
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());
 	private static final MazeImageHandler IMAGE_HANDLER = new MazeImageHandler();
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
+
+		Thread.sleep(10000L);
 
 		long startTime = System.currentTimeMillis();
 
@@ -34,10 +36,13 @@ public class Main {
 	private static void solveMazeWithAllAlgorithms(File outputParent, File input) throws IOException {
 		LOG.info("Attempting " + input.getName());
 
+		System.gc();
 		solveRecursive(input, outputParent);
 
+		System.gc();
 		solveRecursiveNode(input, outputParent);
 
+		System.gc();
 		solveDijkstra(input, outputParent);
 	}
 
