@@ -5,12 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 @SuppressWarnings("static-method")
-public class NodeTest {
+public class VisitableNodeTest {
 
 	@Test
 	public void testGetPosition() {
 		Position pos = new Position(0, 0);
-		SimpleNode n = new SimpleNode(pos);
+		VisitableNode n = new VisitableNode(pos);
 
 		assertEquals(pos, n.getPosition());
 	}
@@ -18,10 +18,10 @@ public class NodeTest {
 	@Test
 	public void Vertical() {
 		Position pos = new Position(0, 1);
-		SimpleNode n = new SimpleNode(pos);
+		VisitableNode n = new VisitableNode(pos);
 
 		Position above = pos.up();
-		SimpleNode aboveN = new SimpleNode(above);
+		VisitableNode aboveN = new VisitableNode(above);
 
 		n.linkUp(aboveN);
 
@@ -32,10 +32,10 @@ public class NodeTest {
 	@Test
 	public void Horizontal() {
 		Position pos = new Position(1, 0);
-		SimpleNode n = new SimpleNode(pos);
+		VisitableNode n = new VisitableNode(pos);
 
 		Position left = pos.left();
-		SimpleNode leftN = new SimpleNode(left);
+		VisitableNode leftN = new VisitableNode(left);
 
 		n.linkLeft(leftN);
 
