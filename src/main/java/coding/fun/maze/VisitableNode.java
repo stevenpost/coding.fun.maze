@@ -12,12 +12,6 @@ public class VisitableNode implements Node {
 	private Node left;
 	private Node right;
 
-	public VisitableNode(Position pos) {
-		this.exit = false;
-		this.xPos = pos.getX();
-		this.yPos = pos.getY();
-	}
-
 	public VisitableNode(Position pos, boolean exit) {
 		this.exit = exit;
 		this.xPos = pos.getX();
