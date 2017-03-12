@@ -83,15 +83,10 @@ public class Main {
 		resursiveNodeFolder.mkdirs();
 		File output = new File(resursiveNodeFolder, input.getName());
 		DijkstraNode startNode = createNodesDijkstra(input);
-		try {
-			MazeSolver solver = new DijkstraSolver(startNode);
-			solveMazeTimed(solver);
+		MazeSolver solver = new DijkstraSolver(startNode);
+		solveMazeTimed(solver);
 
-			writeOutput(input, output, solver);
-		}
-		catch (@SuppressWarnings("unused") StackOverflowError soe) {
-			LOG.severe("Recursing nodes to deep on " + input.getName());
-		}
+		writeOutput(input, output, solver);
 
 	}
 
