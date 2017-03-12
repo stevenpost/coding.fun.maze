@@ -17,30 +17,7 @@ public class DijkstraNode implements Node, Comparable<DijkstraNode> {
 	private Node left;
 	private Node right;
 
-	public DijkstraNode(Position pos, int weigth) {
-		this.weigth = weigth;
-		this.exit = false;
-		this.xPos = pos.getX();
-		this.yPos = pos.getY();
-	}
-
 	public DijkstraNode(Position pos, int weigth, boolean exit) {
-		this.weigth = weigth;
-		this.exit = exit;
-		this.xPos = pos.getX();
-		this.yPos = pos.getY();
-	}
-
-	public DijkstraNode(Position pos, DijkstraNode shortestPath, int weigth) {
-		this.shortestPath = shortestPath;
-		this.weigth = weigth;
-		this.exit = false;
-		this.xPos = pos.getX();
-		this.yPos = pos.getY();
-	}
-
-	public DijkstraNode(Position pos, DijkstraNode shortestPath, int weigth, boolean exit) {
-		this.shortestPath = shortestPath;
 		this.weigth = weigth;
 		this.exit = exit;
 		this.xPos = pos.getX();

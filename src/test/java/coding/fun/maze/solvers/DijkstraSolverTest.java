@@ -15,7 +15,7 @@ public class DijkstraSolverTest {
 	@Test
 	public void testSimple() {
 		Position startPos = new Position(1, 0);
-		DijkstraNode startNode = new DijkstraNode(startPos, -1);
+		DijkstraNode startNode = new DijkstraNode(startPos, -1, false);
 
 		Position endPos = new Position(1, 2);
 		Node endNode = new DijkstraNode(endPos, -1, true);
