@@ -79,6 +79,7 @@ public class Main {
 			List<? extends Node> solutionNodes = solver.getSolutionNodes();
 			solver = null;
 			LOG.info("Solution has " + solutionNodes.size() + " node(s)");
+			System.gc();
 
 			writeOutput(input, output, solutionNodes);
 		}
@@ -99,6 +100,7 @@ public class Main {
 		List<? extends Node> solutionNodes = solver.getSolutionNodes();
 		solver = null;
 		LOG.info("Solution has " + solutionNodes.size() + " node(s)");
+		System.gc();
 
 		writeOutput(input, output, solutionNodes);
 
