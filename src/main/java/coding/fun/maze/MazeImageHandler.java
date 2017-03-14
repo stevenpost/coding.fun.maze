@@ -113,20 +113,6 @@ public class MazeImageHandler {
 		}
 	}
 
-	public void writeSolutionForNodes(boolean[][] maze, File output, List<? extends Node> solutionNodes) throws IOException {
-		BufferedImage outputImg = new BufferedImage(maze[0].length, maze.length, BufferedImage.TYPE_INT_ARGB);
-		for (int x = 0; x < outputImg.getWidth(); x++) {
-			for (int y = 0; y < outputImg.getHeight(); y++) {
-				setMatchingColour(maze, outputImg, x, y);
-			}
-		}
-
-		drawSolution(solutionNodes, outputImg);
-
-		ImageIO.write(outputImg, "png", output);
-
-	}
-
 	public void writeSolutionForNodes(File input, File output, List<? extends Node> solutionNodes) throws IOException {
 		BufferedImage inputImg = ImageIO.read(input);
 		int height = inputImg.getHeight();
