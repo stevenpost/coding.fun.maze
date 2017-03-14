@@ -55,7 +55,8 @@ public class Main {
 		File output = new File(resursiveFolder, input.getName());
 		try {
 			MazeSolver solver = new RecursiveSolver(maze);
-			solveMazeTimed(solver);
+			solver.solve();
+			solver.printStatistics();
 
 			writeOutput(input, output, solver);
 		}
@@ -74,7 +75,8 @@ public class Main {
 
 		try {
 			MazeSolver solver = new RecursiveNodeSolver((VisitableNode) startNode);
-			solveMazeTimed(solver);
+			solver.solve();
+			solver.printStatistics();
 
 			List<? extends Node> solutionNodes = solver.getSolutionNodes();
 			solver = null;
@@ -95,7 +97,8 @@ public class Main {
 		File output = new File(resursiveNodeFolder, input.getName());
 		DijkstraNode startNode = createNodesDijkstra(input);
 		MazeSolver solver = new DijkstraSolver(startNode);
-		solveMazeTimed(solver);
+		solver.solve();
+		solver.printStatistics();
 
 		List<? extends Node> solutionNodes = solver.getSolutionNodes();
 		solver = null;
@@ -150,14 +153,6 @@ public class Main {
 		solver.writeSolutionImage(inputImage, outputImage);
 		long endtime = System.currentTimeMillis();
 		LOG.info("Output written in " + (endtime - startTime) + " ms");
-	}
-
-	private static void solveMazeTimed(MazeSolver solver) {
-		long startTime = System.currentTimeMillis();
-		solver.solve();
-		long endtime = System.currentTimeMillis();
-		LOG.info("Solved maze in " + (endtime - startTime) + " ms");
-		solver.printStatistics();
 	}
 
 }

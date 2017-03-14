@@ -13,9 +13,10 @@ import coding.fun.maze.VisitableNode;
 public class RecursiveNodeSolver implements MazeSolver {
 
 	private final VisitableNode startNode;
+	private final List<VisitableNode> solutionNodes = new ArrayList<>();
 	private int nrOfSteps = 0;
 	private int nrOfBackTracks = 0;
-	private final List<VisitableNode> solutionNodes = new ArrayList<>();
+	private long runTimeInMs = 0;
 
 	public RecursiveNodeSolver(VisitableNode startNode) {
 		this.startNode = startNode;
@@ -23,8 +24,13 @@ public class RecursiveNodeSolver implements MazeSolver {
 
 	@Override
 	public void solve() {
+		long startTime = System.currentTimeMillis();
+
 		step(this.startNode);
 		this.solutionNodes.add(this.startNode);
+
+		long endTime = System.currentTimeMillis();
+		this.runTimeInMs = endTime - startTime;
 	}
 
 	private boolean step(VisitableNode currentNode) {
@@ -90,6 +96,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 		System.out.println("Method: " + this.getClass().getName());
 		System.out.println("Number of steps taken: " + this.nrOfSteps);
 		System.out.println("Number of times we had to backtrack: " + this.nrOfBackTracks);
+		System.out.println("Needed " + this.runTimeInMs + " ms to solve");
 	}
 
 	@Override

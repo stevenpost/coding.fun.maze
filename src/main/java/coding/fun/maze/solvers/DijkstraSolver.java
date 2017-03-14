@@ -20,6 +20,7 @@ public class DijkstraSolver implements MazeSolver {
 	private final PriorityQueue<DijkstraNode> priorityQ = new PriorityQueue<>();
 	private boolean solved = false;
 	private int expandedNodes = 0;
+	private long runTimeInMs = 0;
 
 	public DijkstraSolver(DijkstraNode startNode) {
 		this.startNode = startNode;
@@ -27,6 +28,7 @@ public class DijkstraSolver implements MazeSolver {
 
 	@Override
 	public void solve() {
+		long startTime = System.currentTimeMillis();
 		this.startNode.setWeigth(0);
 		this.priorityQ.add(this.startNode);
 
@@ -35,6 +37,9 @@ public class DijkstraSolver implements MazeSolver {
 			expandNode(n);
 		}
 		backTraversal();
+
+		long endtime = System.currentTimeMillis();
+		this.runTimeInMs = endtime - startTime;
 	}
 
 	private void expandNode(DijkstraNode n) {
@@ -100,6 +105,7 @@ public class DijkstraSolver implements MazeSolver {
 		System.out.println("Method: " + this.getClass().getName());
 		System.out.println("Number of nodes expanded: " + this.expandedNodes);
 		System.out.println("Total path weigth: " + this.endNode.getWeigth());
+		System.out.println("Needed " + this.runTimeInMs + " ms to solve");
 	}
 
 	@Override
