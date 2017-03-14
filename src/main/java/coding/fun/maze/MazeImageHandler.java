@@ -2,11 +2,21 @@ package coding.fun.maze;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import ar.com.hjg.pngj.FilterType;
+import ar.com.hjg.pngj.ImageInfo;
+import ar.com.hjg.pngj.ImageLineHelper;
+import ar.com.hjg.pngj.ImageLineInt;
+import ar.com.hjg.pngj.PngWriter;
+import ar.com.hjg.pngj.pixels.PixelsWriterDefault;
 
 public class MazeImageHandler {
 
@@ -117,32 +127,62 @@ public class MazeImageHandler {
 		BufferedImage inputImg = ImageIO.read(input);
 		int height = inputImg.getHeight();
 		int width = inputImg.getWidth();
-		BufferedImage outputImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-		copyMazeImage(inputImg, height, width, outputImg);
 
-		drawSolution(solutionNodes, outputImg);
+		try (OutputStream os = new BufferedOutputStream(new FileOutputStream(output))) {
+			PngWriter png = new PngWriter(os, new ImageInfo(width, height, 8, false));
+			((PixelsWriterDefault) png.getPixelsWriter()).setFilterType(FilterType.FILTER_AVERAGE);
+			png.setCompLevel(6);
 
-		ImageIO.write(outputImg, "png", output);
+			BufferedImage intermediateImage = copyMazeImage(inputImg, height, width);
+			drawSolution(solutionNodes, intermediateImage);
+			writeMazeImage(intermediateImage, height, width, png);
+
+			png.end();
+		}
 	}
 
-	private void copyMazeImage(BufferedImage inputImg, int height, int width, BufferedImage outputImg) {
+	private BufferedImage copyMazeImage(BufferedImage inputImg, int height, int width) {
+		BufferedImage outputImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
 		for(int y = 0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
 				int pixel = inputImg.getRGB(x, y);
-				switch (pixel) {
-					case -16777216:
-						// Black
-						outputImg.setRGB(x, y, Color.black.getRGB());
-						break;
-					case -1:
-						// White
-						outputImg.setRGB(x, y, Color.white.getRGB());
-						break;
-					default:
-						throw new IllegalArgumentException("This is a strange pixel (" + x + ";" + y + "): " + pixel);
+				if (inputImg.getRGB(x, y) == Color.BLACK.getRGB()) {
+					outputImg.setRGB(x, y, Color.BLACK.getRGB());
+				}
+				else if (inputImg.getRGB(x, y) == Color.WHITE.getRGB()) {
+					outputImg.setRGB(x, y, Color.WHITE.getRGB());
+				}
+				else {
+					throw new IllegalArgumentException("This is a strange pixel (" + x + ";" + y + "): " + pixel);
 				}
 			}
+		}
+
+		return outputImg;
+	}
+
+	private void writeMazeImage(BufferedImage inputImg, int height, int width, PngWriter png) {
+		ImageLineInt iline1 = new ImageLineInt(png.imgInfo);
+		ImageLineInt iline = iline1;
+		for(int y = 0; y < height; y++) {
+			for(int x = 0; x < width; x++) {
+				int pixel = inputImg.getRGB(x, y);
+				if (inputImg.getRGB(x, y) == Color.BLACK.getRGB()) {
+					ImageLineHelper.setPixelRGB8(iline1, x, Color.BLACK.getRGB());
+				}
+				else if (inputImg.getRGB(x, y) == Color.WHITE.getRGB()) {
+					ImageLineHelper.setPixelRGB8(iline1, x, Color.WHITE.getRGB());
+				}
+				else if (inputImg.getRGB(x, y) == Color.RED.getRGB()) {
+					ImageLineHelper.setPixelRGB8(iline1, x, Color.RED.getRGB());
+				}
+				else {
+					throw new IllegalArgumentException("This is a strange pixel (" + x + ";" + y + "): " + pixel);
+				}
+			}
+			png.writeRow(iline, y);
 		}
 	}
 
