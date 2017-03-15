@@ -80,11 +80,10 @@ public class DijkstraSolver implements MazeSolver {
 		Position pos = node.getPosition();
 
 		int weigthtToNode = calculateWeigth(pos, linkedNode.getPosition());
-		int totalWeigth = node.getWeigth() + weigthtToNode;
 
 		int currentWeigth = linkedNode.getWeigth();
-		if (totalWeigth < currentWeigth || currentWeigth == -1) {
-			linkedNode.setWeigth(totalWeigth);
+		if (currentWeigth == -1) {
+			linkedNode.setWeigth(weigthtToNode);
 			linkedNode.setShortestPath(node);
 			this.priorityQ.add(linkedNode);
 		}
