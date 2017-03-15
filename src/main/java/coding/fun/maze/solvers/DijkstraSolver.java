@@ -50,6 +50,8 @@ public class DijkstraSolver implements MazeSolver {
 		addNewNodes(n, (DijkstraNode) n.getLinkLeft());
 		addNewNodes(n, (DijkstraNode) n.getLinkRight());
 
+		n.unlinkAll();
+
 		if (n.isExit()) {
 			this.endNode = n;
 			this.solved = true;
