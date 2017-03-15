@@ -17,13 +17,14 @@ public class DijkstraSolver implements MazeSolver {
 	private final DijkstraNode startNode;
 	private DijkstraNode endNode;
 	private final LinkedList<Node> solutionNodes = new LinkedList<>();
-	private final PriorityQueue<DijkstraNode> priorityQ = new PriorityQueue<>();
+	private final PriorityQueue<DijkstraNode> priorityQ;
 	private boolean solved = false;
 	private int expandedNodes = 0;
 	private long runTimeInMs = 0;
 
-	public DijkstraSolver(DijkstraNode startNode) {
+	public DijkstraSolver(DijkstraNode startNode, int priorityQueueCapacity) {
 		this.startNode = startNode;
+		this.priorityQ = new PriorityQueue<>(priorityQueueCapacity);
 	}
 
 	@Override

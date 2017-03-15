@@ -15,6 +15,7 @@ public class Main {
 
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());
 	private static final MazeImageHandler IMAGE_HANDLER = new MazeImageHandler();
+	private static int pqCapacity = 11;
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -96,7 +97,7 @@ public class Main {
 		resursiveNodeFolder.mkdirs();
 		File output = new File(resursiveNodeFolder, input.getName());
 		DijkstraNode startNode = createNodesDijkstra(input);
-		MazeSolver solver = new DijkstraSolver(startNode);
+		MazeSolver solver = new DijkstraSolver(startNode, pqCapacity);
 		solver.solve();
 		solver.printStatistics();
 
@@ -116,6 +117,7 @@ public class Main {
 		DijkstraNode startNode = creator.createDijkstraNodes();
 		long endTime = System.currentTimeMillis();
 		int nrOfNodes = creator.getNumberOfCreateNodes();
+		pqCapacity = nrOfNodes;
 		LOG.info("Created " + nrOfNodes + " node(s) in " + (endTime - startTime) + " ms");
 		return startNode;
 	}
