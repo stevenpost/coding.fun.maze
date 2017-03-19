@@ -4,15 +4,12 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
 public class NodeCreator {
 
 	private final WritableRaster raster;
-	private final Map<Position, Node> mazeNodes = new HashMap<>();
 	private Node exitNode;
 	private final int heigth;
 	private final int width;
@@ -20,6 +17,7 @@ public class NodeCreator {
 	private final Class<? extends Node> nodeType;
 	private final int maxX;
 	private final int maxY;
+	private final Node[] nodesAbove;
 
 	public NodeCreator(File mazeImage, Class<? extends Node> nodeType) throws IOException {
 		BufferedImage mazeImg = ImageIO.read(mazeImage);
@@ -29,6 +27,7 @@ public class NodeCreator {
 		this.maxX = this.width -1;
 		this.maxY = this.heigth -1;
 		this.nodeType = nodeType;
+		this.nodesAbove = new Node[this.width];
 	}
 
 	public Node createNodes() {
@@ -44,15 +43,13 @@ public class NodeCreator {
 					int distance = calculateDistane(pos);
 					Node n = createNode(pos, false, distance);
 					this.nrOfCreateNodes++;
-					this.mazeNodes.put(pos, n);
 					linkPreviousNodes(n);
-					removeNodesAbove(pos);
+					this.nodesAbove[x] = n;
 				}
 			}
 		}
 
 		linkPreviousNodes(this.exitNode);
-		removeNodesAbove(this.exitNode.getPosition());
 
 		return startNode;
 	}
@@ -66,7 +63,7 @@ public class NodeCreator {
 				Node n = createNode(pos, false, distance);
 				this.nrOfCreateNodes++;
 				startNode = n;
-				this.mazeNodes.put(pos, n);
+				this.nodesAbove[x] = n;
 				break;
 			}
 		}
@@ -89,7 +86,7 @@ public class NodeCreator {
 				Node n = createNode(pos, true, 0);
 				this.nrOfCreateNodes++;
 				this.exitNode = n;
-				this.mazeNodes.put(pos, n);
+				this.nodesAbove[x] = n;
 				break;
 			}
 		}
@@ -112,16 +109,6 @@ public class NodeCreator {
 		return n;
 	}
 
-	private void removeNodesAbove(Position pos) {
-		int x = pos.getX();
-		for (int y = pos.getY()-1; y >= 0; y--) {
-			Position posToRemove = new Position(x, y);
-			if (this.mazeNodes.remove(posToRemove) != null) {
-				break;
-			}
-		}
-	}
-
 	private void linkPreviousNodes(Node n) {
 		linkNodeAbove(n);
 		linkNodeLeft(n);
@@ -133,8 +120,8 @@ public class NodeCreator {
 		int x = pos.getX() - 1;
 		int y = pos.getY();
 		while (x >= 0 && isPassable(x, y)) {
-			Node leftN = this.mazeNodes.get(new Position(x, y));
-			if (leftN != null) {
+			Node leftN = this.nodesAbove[x];
+			if (leftN != null && leftN.getPosition().getY() == y) {
 				n.linkLeft(leftN);
 				break;
 			}
@@ -147,9 +134,13 @@ public class NodeCreator {
 
 		int x = pos.getX();
 		int y = pos.getY() - 1;
+		Node aboveN = this.nodesAbove[x];
+		if (aboveN == null) {
+			return;
+		}
+
 		while (y >= 0 && isPassable(x, y)) {
-			Node aboveN = this.mazeNodes.get(new Position(x, y));
-			if (aboveN != null) {
+			if (aboveN.getPosition().getY() == y) {
 				n.linkUp(aboveN);
 				break;
 			}
