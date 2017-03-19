@@ -3,7 +3,6 @@ package coding.fun.maze;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,8 +60,7 @@ public class Main {
 			MazeSolver solver = new RecursiveSolver(maze);
 			solver.solve();
 			solver.printStatistics();
-
-			writeOutput(input, output, solver);
+			solver.writeSolutionImage(input, output);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
 			LOG.error("Recursing to deep on " + input.getName());
@@ -81,13 +79,7 @@ public class Main {
 			MazeSolver solver = new RecursiveNodeSolver(startNode);
 			solver.solve();
 			solver.printStatistics();
-
-			List<? extends Node> solutionNodes = solver.getSolutionNodes();
-			solver = null;
-			System.out.println("Solution has " + solutionNodes.size() + " node(s)");
-			System.gc();
-
-			writeOutput(input, output, solutionNodes);
+			solver.writeSolutionImage(input, output);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
 			LOG.error("Recursing nodes to deep on " + input.getName());
@@ -102,13 +94,7 @@ public class Main {
 		MazeSolver solver = new DijkstraSolver(startNode, pqCapacity);
 		solver.solve();
 		solver.printStatistics();
-
-		List<? extends Node> solutionNodes = solver.getSolutionNodes();
-		solver = null;
-		LOG.info("Solution has " + solutionNodes.size() + " node(s)");
-		System.gc();
-
-		writeOutput(input, output, solutionNodes);
+		solver.writeSolutionImage(input, output);
 	}
 
 	private static void solveAStar(File input, File outputParent) throws IOException {
@@ -119,13 +105,7 @@ public class Main {
 		MazeSolver solver = new AStarSolver(startNode, pqCapacity);
 		solver.solve();
 		solver.printStatistics();
-
-		List<? extends Node> solutionNodes = solver.getSolutionNodes();
-		solver = null;
-		LOG.info("Solution has " + solutionNodes.size() + " node(s)");
-		System.gc();
-
-		writeOutput(input, output, solutionNodes);
+		solver.writeSolutionImage(input, output);
 	}
 
 	private static Node createNodes(File input, Class<? extends Node> nodeType) throws IOException {
@@ -147,21 +127,6 @@ public class Main {
 		long endTime = System.currentTimeMillis();
 		LOG.info("Loaded maze in " + (endTime - startTime) + " ms");
 		return maze;
-	}
-
-	private static void writeOutput(File inputImage, File outputImage, List<? extends Node> solutionNodes) throws IOException {
-		long startTime = System.currentTimeMillis();
-		MazeImageHandler handler = new MazeImageHandler();
-		handler.writeSolutionForNodes(inputImage, outputImage, solutionNodes);
-		long endtime = System.currentTimeMillis();
-		LOG.info("Output written in " + (endtime - startTime) + " ms");
-	}
-
-	private static void writeOutput(File inputImage, File outputImage, MazeSolver solver) throws IOException {
-		long startTime = System.currentTimeMillis();
-		solver.writeSolutionImage(inputImage, outputImage);
-		long endtime = System.currentTimeMillis();
-		LOG.info("Output written in " + (endtime - startTime) + " ms");
 	}
 
 }

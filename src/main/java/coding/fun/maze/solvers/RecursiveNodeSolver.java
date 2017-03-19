@@ -5,12 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import coding.fun.maze.MazeImageHandler;
 import coding.fun.maze.Node;
 import coding.fun.maze.TileType;
 import coding.fun.maze.VisitableNode;
 
 public class RecursiveNodeSolver implements MazeSolver {
+
+	private static final Logger LOG = LoggerFactory.getLogger(RecursiveNodeSolver.class);
 
 	private final VisitableNode startNode;
 	private final List<VisitableNode> solutionNodes = new ArrayList<>();
@@ -96,13 +101,17 @@ public class RecursiveNodeSolver implements MazeSolver {
 		System.out.println("Method: " + this.getClass().getName());
 		System.out.println("Number of steps taken: " + this.nrOfSteps);
 		System.out.println("Number of times we had to backtrack: " + this.nrOfBackTracks);
+		System.out.println("Nodes in solution: " + this.solutionNodes.size());
 		System.out.println("Needed " + this.runTimeInMs + " ms to solve");
 	}
 
 	@Override
 	public void writeSolutionImage(File input, File output) throws IOException {
+		long startTime = System.currentTimeMillis();
 		MazeImageHandler handler = new MazeImageHandler();
 		handler.writeSolutionForNodes(input, output, this.solutionNodes);
+		long endtime = System.currentTimeMillis();
+		LOG.info("Output written in " + (endtime - startTime) + " ms");
 	}
 
 	@Override

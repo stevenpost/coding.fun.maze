@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import coding.fun.maze.DijkstraNode;
 import coding.fun.maze.MazeImageHandler;
 import coding.fun.maze.Node;
@@ -13,6 +16,8 @@ import coding.fun.maze.Position;
 import coding.fun.maze.TileType;
 
 public class DijkstraSolver implements MazeSolver {
+
+	private static final Logger LOG = LoggerFactory.getLogger(DijkstraSolver.class);
 
 	private final DijkstraNode startNode;
 	private DijkstraNode endNode;
@@ -106,14 +111,17 @@ public class DijkstraSolver implements MazeSolver {
 	public void printStatistics() {
 		System.out.println("Method: " + this.getClass().getName());
 		System.out.println("Number of nodes expanded: " + this.expandedNodes);
-		System.out.println("Total path weigth: " + this.endNode.getWeigth());
+		System.out.println("Nodes in solution: " + this.solutionNodes.size());
 		System.out.println("Needed " + this.runTimeInMs + " ms to solve");
 	}
 
 	@Override
 	public void writeSolutionImage(File input, File output) throws IOException {
+		long startTime = System.currentTimeMillis();
 		MazeImageHandler handler = new MazeImageHandler();
 		handler.writeSolutionForNodes(input, output, this.solutionNodes);
+		long endtime = System.currentTimeMillis();
+		LOG.info("Output written in " + (endtime - startTime) + " ms");
 	}
 
 	@Override
