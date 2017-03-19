@@ -35,18 +35,7 @@ public class NodeCreator {
 
 		createExitNode();
 
-		Node startNode = null;
-		for (int x = 1; x < this.width; x++) {
-			if (isNode(x, 0)) {
-				Position pos = new Position(x, 0);
-				int distance = calculateDistane(pos);
-				Node n = createNode(pos, false, distance);
-				this.nrOfCreateNodes++;
-				startNode = n;
-				this.mazeNodes.put(pos, n);
-				break;
-			}
-		}
+		Node startNode = createStartNode();
 
 		for (int y = 1; y < this.maxY; y++) {
 			for (int x = 1; x < this.maxX; x++) {
@@ -65,6 +54,22 @@ public class NodeCreator {
 		linkPreviousNodes(this.exitNode);
 		removeNodesAbove(this.exitNode.getPosition());
 
+		return startNode;
+	}
+
+	private Node createStartNode() {
+		Node startNode = null;
+		for (int x = 1; x < this.width; x++) {
+			if (isNode(x, 0)) {
+				Position pos = new Position(x, 0);
+				int distance = calculateDistane(pos);
+				Node n = createNode(pos, false, distance);
+				this.nrOfCreateNodes++;
+				startNode = n;
+				this.mazeNodes.put(pos, n);
+				break;
+			}
+		}
 		return startNode;
 	}
 
