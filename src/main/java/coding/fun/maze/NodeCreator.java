@@ -18,12 +18,16 @@ public class NodeCreator {
 	private final int width;
 	private int nrOfCreateNodes = 0;
 	private final Class<? extends Node> nodeType;
+	private final int maxX;
+	private final int maxY;
 
 	public NodeCreator(File mazeImage, Class<? extends Node> nodeType) throws IOException {
 		BufferedImage mazeImg = ImageIO.read(mazeImage);
 		this.raster = mazeImg.getRaster();
 		this.heigth = mazeImg.getHeight();
 		this.width = mazeImg.getWidth();
+		this.maxX = this.width -1;
+		this.maxY = this.heigth -1;
 		this.nodeType = nodeType;
 	}
 
@@ -32,7 +36,7 @@ public class NodeCreator {
 		createExitNode();
 
 		Node startNode = null;
-		for (int x = 0; x < this.width; x++) {
+		for (int x = 1; x < this.width; x++) {
 			if (isNode(x, 0)) {
 				Position pos = new Position(x, 0);
 				int distance = calculateDistane(pos);
@@ -40,12 +44,12 @@ public class NodeCreator {
 				this.nrOfCreateNodes++;
 				startNode = n;
 				this.mazeNodes.put(pos, n);
+				break;
 			}
 		}
 
-		int lastRow = this.heigth - 1;
-		for (int y = 1; y < lastRow; y++) {
-			for (int x = 0; x < this.width; x++) {
+		for (int y = 1; y < this.maxY; y++) {
+			for (int x = 1; x < this.maxX; x++) {
 				if (isNode(x, y)) {
 					Position pos = new Position(x, y);
 					int distance = calculateDistane(pos);
@@ -74,13 +78,14 @@ public class NodeCreator {
 
 	private void createExitNode() {
 		int lastRow = this.heigth - 1;
-		for (int x = 0; x < this.width; x++) {
+		for (int x = 1; x < this.width; x++) {
 			if (isNode(x, lastRow)) {
 				Position pos = new Position(x, lastRow);
 				Node n = createNode(pos, true, 0);
 				this.nrOfCreateNodes++;
 				this.exitNode = n;
 				this.mazeNodes.put(pos, n);
+				break;
 			}
 		}
 	}
