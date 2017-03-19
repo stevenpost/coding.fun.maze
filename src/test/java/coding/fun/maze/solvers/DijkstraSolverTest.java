@@ -22,7 +22,7 @@ public class DijkstraSolverTest {
 
 		startNode.linkDown(endNode);
 
-		MazeSolver solver = new DijkstraSolver(startNode, 11);
+		MazeSolver solver = new DijkstraSolver(startNode);
 		solver.solve();
 		List<? extends Node> solution = solver.getSolutionNodes();
 

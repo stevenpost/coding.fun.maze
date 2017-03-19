@@ -17,7 +17,6 @@ public class Main {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 	private static final MazeImageHandler IMAGE_HANDLER = new MazeImageHandler();
-	private static int pqCapacity = 11;
 
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
@@ -91,7 +90,7 @@ public class Main {
 		resursiveNodeFolder.mkdirs();
 		File output = new File(resursiveNodeFolder, input.getName());
 		DijkstraNode startNode = (DijkstraNode) createNodes(input, DijkstraNode.class);
-		MazeSolver solver = new DijkstraSolver(startNode, pqCapacity);
+		MazeSolver solver = new DijkstraSolver(startNode);
 		solver.solve();
 		solver.printStatistics();
 		solver.writeSolutionImage(input, output);
@@ -102,7 +101,7 @@ public class Main {
 		resursiveNodeFolder.mkdirs();
 		File output = new File(resursiveNodeFolder, input.getName());
 		AStarNode startNode = (AStarNode) createNodes(input, AStarNode.class);
-		MazeSolver solver = new AStarSolver(startNode, pqCapacity);
+		MazeSolver solver = new AStarSolver(startNode);
 		solver.solve();
 		solver.printStatistics();
 		solver.writeSolutionImage(input, output);
@@ -115,7 +114,6 @@ public class Main {
 		Node startNode = creator.createNodes();
 		long endTime = System.currentTimeMillis();
 		int nrOfNodes = creator.getNumberOfCreateNodes();
-		pqCapacity = nrOfNodes;
 		LOG.info("Created " + nrOfNodes + " node(s) in " + (endTime - startTime) + " ms");
 		return startNode;
 	}

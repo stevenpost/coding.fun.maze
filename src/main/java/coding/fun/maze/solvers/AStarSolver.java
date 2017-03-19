@@ -21,14 +21,13 @@ public class AStarSolver implements MazeSolver {
 	private final AStarNode startNode;
 	private AStarNode endNode;
 	private final LinkedList<Node> solutionNodes = new LinkedList<>();
-	private final PriorityQueue<AStarNode> priorityQ;
+	private final PriorityQueue<AStarNode> priorityQ = new PriorityQueue<>();
 	private boolean solved = false;
 	private int expandedNodes = 0;
 	private long runTimeInMs = 0;
 
-	public AStarSolver(AStarNode startNode, int priorityQueueCapacity) {
+	public AStarSolver(AStarNode startNode) {
 		this.startNode = startNode;
-		this.priorityQ = new PriorityQueue<>(priorityQueueCapacity);
 	}
 
 	@Override
