@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import coding.fun.maze.solvers.AStarSolver;
 import coding.fun.maze.solvers.DijkstraSolver;
@@ -14,14 +16,11 @@ import coding.fun.maze.solvers.RecursiveSolver;
 
 public class Main {
 
-	private static final Logger LOG = Logger.getLogger(Main.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 	private static final MazeImageHandler IMAGE_HANDLER = new MazeImageHandler();
 	private static int pqCapacity = 11;
 
-	public static void main(String[] args) throws IOException, InterruptedException {
-
-		Thread.sleep(10000L);
-
+	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
 
 		File inputFolder = new File("src/main/resources/input");
@@ -66,7 +65,7 @@ public class Main {
 			writeOutput(input, output, solver);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
-			LOG.severe("Recursing to deep on " + input.getName());
+			LOG.error("Recursing to deep on " + input.getName());
 		}
 
 
@@ -85,13 +84,13 @@ public class Main {
 
 			List<? extends Node> solutionNodes = solver.getSolutionNodes();
 			solver = null;
-			LOG.info("Solution has " + solutionNodes.size() + " node(s)");
+			System.out.println("Solution has " + solutionNodes.size() + " node(s)");
 			System.gc();
 
 			writeOutput(input, output, solutionNodes);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
-			LOG.severe("Recursing nodes to deep on " + input.getName());
+			LOG.error("Recursing nodes to deep on " + input.getName());
 		}
 	}
 
