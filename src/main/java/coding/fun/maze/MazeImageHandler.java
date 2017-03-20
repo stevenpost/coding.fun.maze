@@ -190,19 +190,7 @@ public class MazeImageHandler {
 	private int getColorForSolutionImage(int x, int y, final WritableRaster raster) {
 		Object o = raster.getDataElements(x, y, null);
 		if (o instanceof int[]) {
-			int color = ((int[])o)[0];
-			if (color == -16777216) {
-				return Color.BLACK.getRGB();
-			}
-			else if (color == -65536) {
-				return Color.RED.getRGB();
-			}
-			else if (color == -1) {
-				return Color.WHITE.getRGB();
-			}
-			else {
-				throw new IllegalArgumentException("This is a strange pixel (" + x + ";" + y + "): " + color);
-			}
+			return ((int[])o)[0];
 		}
 
 		throw new IllegalArgumentException("This wasn't an array as expected" + o.getClass());
