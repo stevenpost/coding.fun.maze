@@ -21,38 +21,9 @@ import ar.com.hjg.pngj.pixels.PixelsWriterDefault;
 
 public class MazeImageHandler {
 
-	public boolean[][] loadMaze(File file) throws IOException {
-		BufferedImage img = ImageIO.read(file);
-		return convertToBooleanArray(img);
-	}
-
 	public TileType[][] loadMazeTileType(File file) throws IOException {
 		BufferedImage img = ImageIO.read(file);
 		return convertToTileTypeArray(img);
-	}
-
-	private boolean[][] convertToBooleanArray(BufferedImage img) {
-		boolean[][] array = new boolean[img.getHeight()][img.getWidth()];
-
-		for(int row = 0; row < array.length; row++) {
-			for(int col = 0; col < array[row].length; col++) {
-				int pixel = img.getRGB(col, row);
-				switch (pixel) {
-					case -16777216:
-						// Black
-						array[row][col] = false;
-						break;
-					case -1:
-						// White
-						array[row][col] = true;
-						break;
-					default:
-						throw new IllegalArgumentException("This is a strange pixel (" + row + ";" + col + "): " + pixel);
-				}
-			}
-		}
-
-		return array;
 	}
 
 	private TileType[][] convertToTileTypeArray(BufferedImage img) {
