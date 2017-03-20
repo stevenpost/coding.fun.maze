@@ -24,6 +24,7 @@ public class RecursiveSolver implements MazeSolver {
 	private final TileType[][] solvedMaze;
 	private final int heigth;
 	private final int width;
+	private boolean solved = false;
 
 	public RecursiveSolver(TileType[][] maze) {
 		this.visitedMaze = maze;
@@ -67,6 +68,7 @@ public class RecursiveSolver implements MazeSolver {
 
 		long endTime = System.currentTimeMillis();
 		this.runTimeInMs = endTime - startTime;
+		this.solved = true;
 	}
 
 	public boolean step(Position currentPos) {
@@ -127,7 +129,12 @@ public class RecursiveSolver implements MazeSolver {
 		System.out.println("Method: " + this.getClass().getName());
 		System.out.println("Number of steps taken: " + this.nrOfSteps);
 		System.out.println("Number of times we had to backtrack: " + this.nrOfBackTracks);
-		System.out.println("Needed " + this.runTimeInMs + " ms to solve");
+		if (this.solved) {
+			System.out.println("Needed " + this.runTimeInMs + " ms to solve");
+		}
+		else {
+			System.out.println("Not solved");
+		}
 	}
 
 	@Override

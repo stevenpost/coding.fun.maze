@@ -22,6 +22,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 	private int nrOfSteps = 0;
 	private int nrOfBackTracks = 0;
 	private long runTimeInMs = 0;
+	private boolean solved = false;
 
 	public RecursiveNodeSolver(VisitableNode startNode) {
 		this.startNode = startNode;
@@ -36,6 +37,7 @@ public class RecursiveNodeSolver implements MazeSolver {
 
 		long endTime = System.currentTimeMillis();
 		this.runTimeInMs = endTime - startTime;
+		this.solved = true;
 	}
 
 	private boolean step(VisitableNode currentNode) {
@@ -102,7 +104,12 @@ public class RecursiveNodeSolver implements MazeSolver {
 		System.out.println("Number of steps taken: " + this.nrOfSteps);
 		System.out.println("Number of times we had to backtrack: " + this.nrOfBackTracks);
 		System.out.println("Nodes in solution: " + this.solutionNodes.size());
-		System.out.println("Needed " + this.runTimeInMs + " ms to solve");
+		if (this.solved) {
+			System.out.println("Needed " + this.runTimeInMs + " ms to solve");
+		}
+		else {
+			System.out.println("Not solved");
+		}
 	}
 
 	@Override

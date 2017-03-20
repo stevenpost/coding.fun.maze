@@ -55,15 +55,15 @@ public class Main {
 		File resursiveFolder = new File(outputParent, "recursive");
 		resursiveFolder.mkdirs();
 		File output = new File(resursiveFolder, input.getName());
+		MazeSolver solver = new RecursiveSolver(maze);
 		try {
-			MazeSolver solver = new RecursiveSolver(maze);
 			solver.solve();
-			solver.printStatistics();
 			solver.writeSolutionImage(input, output);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
 			LOG.error("Recursing to deep on " + input.getName());
 		}
+		solver.printStatistics();
 
 
 	}
@@ -74,15 +74,15 @@ public class Main {
 		File output = new File(resursiveNodeFolder, input.getName());
 		VisitableNode startNode = (VisitableNode) createNodes(input, VisitableNode.class);
 
+		MazeSolver solver = new RecursiveNodeSolver(startNode);
 		try {
-			MazeSolver solver = new RecursiveNodeSolver(startNode);
 			solver.solve();
-			solver.printStatistics();
 			solver.writeSolutionImage(input, output);
 		}
 		catch (@SuppressWarnings("unused") StackOverflowError soe) {
 			LOG.error("Recursing nodes to deep on " + input.getName());
 		}
+		solver.printStatistics();
 	}
 
 	private static void solveDijkstra(File input, File outputParent) throws IOException {
