@@ -24,12 +24,16 @@ public class RecursiveSolver implements MazeSolver {
 	private final TileType[][] solvedMaze;
 	private final int heigth;
 	private final int width;
+	private final int maxX;
+	private final int maxY;
 	private boolean solved = false;
 
 	public RecursiveSolver(TileType[][] maze) {
 		this.visitedMaze = maze;
 		this.heigth = maze.length;
 		this.width = maze[0].length;
+		this.maxX = this.width - 1;
+		this.maxY = this.heigth - 1;
 
 		this.solvedMaze = new TileType[this.heigth][this.width];
 		for(int x = 0; x < maze.length; x++) {
@@ -58,7 +62,7 @@ public class RecursiveSolver implements MazeSolver {
 		long startTime = System.currentTimeMillis();
 
 		int startX = 0;
-		for (int x = 0; x < this.width; x++) {
+		for (int x = 1; x < this.width; x++) {
 			if (this.visitedMaze[0][x] == TileType.FREE) {
 				startX = x;
 				break;
@@ -104,11 +108,11 @@ public class RecursiveSolver implements MazeSolver {
 			return currentPos.down();
 		}
 		// look right
-		if (currentPos.getX() + 1 < this.width && typeAtPos(currentPos.right()) == TileType.FREE) {
+		if (currentPos.getX() + 1 < this.maxX && typeAtPos(currentPos.right()) == TileType.FREE) {
 			return currentPos.right();
 		}
 		// look left
-		if (currentPos.getX() > 0 && typeAtPos(currentPos.left()) == TileType.FREE) {
+		if (currentPos.getX() > 1 && typeAtPos(currentPos.left()) == TileType.FREE) {
 			return currentPos.left();
 		}
 		// look up
