@@ -2,6 +2,7 @@ package coding.fun.maze;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -144,23 +145,34 @@ public class MazeImageHandler {
 
 	private BufferedImage copyMazeImage(BufferedImage inputImg, int height, int width) {
 		BufferedImage outputImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		final WritableRaster raster = inputImg.getRaster();
 
 		for(int y = 0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
-				int pixel = inputImg.getRGB(x, y);
-				if (inputImg.getRGB(x, y) == Color.BLACK.getRGB()) {
-					outputImg.setRGB(x, y, Color.BLACK.getRGB());
-				}
-				else if (inputImg.getRGB(x, y) == Color.WHITE.getRGB()) {
+				if (isPassable(x, y, raster)) {
 					outputImg.setRGB(x, y, Color.WHITE.getRGB());
 				}
 				else {
-					throw new IllegalArgumentException("This is a strange pixel (" + x + ";" + y + "): " + pixel);
+					outputImg.setRGB(x, y, Color.BLACK.getRGB());
 				}
 			}
 		}
 
 		return outputImg;
+	}
+
+	private boolean isPassable(int x, int y, final WritableRaster raster) {
+		Object o = raster.getDataElements(x, y, null);
+		if (o instanceof byte[]) {
+			byte color = ((byte[])o)[0];
+			if (color == 0) {
+				return false;
+			}
+			return true;
+		}
+
+		throw new IllegalArgumentException("This wasn't an array as expected");
+
 	}
 
 	private void writeMazeImage(BufferedImage inputImg, int height, int width, PngWriter png) {
